@@ -9,9 +9,10 @@ import os
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 quick = ["--quick"] if "--quick" in sys.argv else []
-steps = [["ch3_rule.py"], ["ch4_sizing.py"], ["ch4_figures.py"], ["ch5_layout.py", *quick]]
+steps = [["ch3_rule.py"], ["ch4_sizing.py"], ["ch4_figures.py"], ["ch4_excel.py"], ["ch5_layout.py", *quick]]
 if not quick:
     steps.append(["scale_test.py"])
+steps.append(["ch5_figures.py"])     # scale_test.csv がないときは、先に scale_test.py を実行する
 for s in steps:
     print(f"\n=== {' '.join(s)} ===", flush=True)
     subprocess.run([sys.executable, os.path.join(HERE, s[0]), *s[1:]], check=True)
