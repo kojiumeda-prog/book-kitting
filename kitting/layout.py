@@ -120,7 +120,7 @@ class SolveInfo:
 class TrayModel:
     def __init__(self, bins: list[Bin], n_trays: int, sequence: bool,
                  fix_trays: int | None = None,
-                 split_w: int = 100, inv_w: int = 20, spread_w: int = 6):
+                 split_w: int = 100, inv_w: int = 20, spread_w: int = 6, tail_w: int = 0):
         self.bins = bins
         self.m = m = cp_model.CpModel()
         self.v: dict[int, dict] = {}
@@ -166,7 +166,7 @@ class TrayModel:
 
         steps = sorted({b.step for b in bins})
         by_step = {s: [b for b in bins if b.step == s] for s in steps}
-        terms, tmin_, tmax_, anchor = [], {}, {}, {}
+        terms, tmin_, tmax_, anchor, tail = [], {}, {}, {}, {}
         KEYMAX = (XMAX + 1) * H
         for s in steps:
             vv = [self.v[b.id] for b in by_step[s]]
@@ -195,11 +195,19 @@ class TrayModel:
             an = m.NewIntVar(0, KEYMAX, f"anchor{s}")
             m.AddMinEquality(an, keys)
             anchor[s] = an
+            if tail_w:                                            # 第6章：工程の最後のビン
+                en = m.NewIntVar(0, KEYMAX, f"end{s}")
+                m.AddMaxEquality(en, keys)
+                tail[s] = en
         for s, s2 in zip(steps, steps[1:]):
             m.Add(tmax_[s] <= tmin_[s2])                          # (c) トレイは工程順に進む
             inv = m.NewBoolVar(f"inv{s}")                         # (d) 読み始めの逆転
             m.Add(anchor[s2] >= anchor[s] + 1 - KEYMAX * inv)
             terms.append(inv_w * inv)
+            if tail_w:                                            # (e) 前の工程の最後より手前に、次の工程が始まる
+                inv2 = m.NewBoolVar(f"tail{s}")
+                m.Add(anchor[s2] >= tail[s] + 1 - KEYMAX * inv2)
+                terms.append(tail_w * inv2)
         m.Minimize(sum(terms))
 
     def solve(self, det_time: float = 60.0, workers: int = 8, seed: int = 0,
@@ -247,9 +255,11 @@ def solve_sequence(bins, n_trays, det_time=120.0, extra_trays=2, hint=None):
     raise RuntimeError("配置が見つかりません")
 
 
-def penalty_of(bins: list[Bin], pl: dict[int, Placement], n_trays: int, **weights) -> float:
-    """与えた配置の罰則（作業順モデルの目的関数値）を計算する。全ビンを固定して解くだけ。"""
-    mdl = TrayModel(bins, n_trays, sequence=True, fix_trays=n_trays, **weights)
+def penalty_of(bins: list[Bin], pl: dict[int, Placement], n_trays: int, exact: bool = True,
+               **weights) -> float:
+    """与えた配置の罰則（作業順モデルの目的関数値）を計算する。全ビンを固定して解くだけ。
+    exact=False なら、トレイは n_trays 枚「まで」（第6章のε制約法）。"""
+    mdl = TrayModel(bins, n_trays, sequence=True, fix_trays=n_trays if exact else None, **weights)
     for b in bins:
         p, a = pl[b.id], mdl.v[b.id]
         for k, v in (("t", p.tray), ("x", p.x), ("y", p.y), ("w", p.w)):
@@ -262,7 +272,7 @@ def penalty_of(bins: list[Bin], pl: dict[int, Placement], n_trays: int, **weight
 
 def improve_lns(bins: list[Bin], init: dict[int, Placement], n_trays: int,
                 window: int = 4, stride: int = 2, passes: int = 3, det_time: float = 3.0,
-                log=print, **weights):
+                log=print, exact: bool = True, **weights):
     """大近傍探索（LNS）：工程を数個ずつ順番に「解き直し」て、配置を少しずつ良くする。
 
     全体を一度に解くと時間がかかる大きな問題でも、一部の工程のビンだけを動かし、
@@ -271,12 +281,12 @@ def improve_lns(bins: list[Bin], init: dict[int, Placement], n_trays: int,
     """
     steps = sorted({b.step for b in bins})
     cur = dict(init)
-    best_obj = penalty_of(bins, init, n_trays, **weights)   # 初期解の罰則
+    best_obj = penalty_of(bins, init, n_trays, exact=exact, **weights)   # 初期解の罰則
     history = [dict(pass_=0, steps="初期解", objective=best_obj)]
     for ps in range(passes):
         for i in range(0, max(1, len(steps) - window + 1), stride):
             free = set(steps[i:i + window])
-            mdl = TrayModel(bins, n_trays, sequence=True, fix_trays=n_trays, **weights)
+            mdl = TrayModel(bins, n_trays, sequence=True, fix_trays=n_trays if exact else None, **weights)
             for b in bins:
                 p, a = cur[b.id], mdl.v[b.id]
                 if b.step in free:

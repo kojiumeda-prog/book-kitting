@@ -1,0 +1,4 @@
+eps,trays,split_steps,n_steps,avg_spread,order_match,tray_switches,penalty,seconds
+4,4,0,31,7.81,0.985,3,1472.0,173.2
+5,5,0,31,7.77,0.988,4,1446.0,203.2
+6,6,0,31,7.81,0.987,5,1452.0,214.3

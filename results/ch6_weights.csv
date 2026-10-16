@@ -1,0 +1,4 @@
+weights,split_w,spread_w,inv_w,trays,split_steps,n_steps,avg_spread,order_match,tray_switches,penalty,seconds
+標準（第5章）,100,6,20,4,1,31,8.13,0.981,3,1600.0,154.7
+まとまり重視,100,20,5,4,1,31,7.9,0.951,3,4985.0,160.4
+読み順重視,100,2,60,4,1,31,8.1,0.985,3,600.0,153.4
