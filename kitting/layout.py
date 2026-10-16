@@ -65,9 +65,9 @@ def layout_rule(bins: list[Bin], order: str = "size", max_trays: int = 10) -> di
     """単純なルールで並べる（貪欲法）。
 
     order="size": 小さいビンから順に、すべてのトレイの上の行・左の列から空き場所に詰める（First-Fit）。
-                  論文 図10-4右の「サイズ順」の考え方。
+                  2008年の「サイズ順の配置」の考え方（本書 図5-1(b)）。
     order="step": 工程順に、今のトレイの左の列・上の行から詰め、入らなくなったら次のトレイへ進む。
-                  論文 図10-4左の「作業順」を単純なルールで再現したもの。CP-SATの初期解（ヒント）にも使う。
+                  2008年の「作業順の配置」（本書 図5-1(a)）を単純なルールで再現したもの。CP-SATの初期解（ヒント）にも使う。
     """
     if order == "size":
         seq = sorted(bins, key=lambda b: (b.type.area, b.step, b.id))

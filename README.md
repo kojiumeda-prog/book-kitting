@@ -42,6 +42,7 @@ Google Colab でも、最初のセルで `!pip install ortools==9.15.6755 pulp==
 | `scripts/ch4_sizing.py` | 種類数 K を変えて品揃え問題を解く | 第4章 |
 | `scripts/ch4_figures.py` | 第4章の図（図4-1〜4-5、4-7、4-9） | 第4章 |
 | `scripts/ch4_excel.py` | Excelソルバー（シンプレックスLP）で解けるシート `results/ch4_solver_SA01.xlsx` を作る | 第4章 4.6節 |
+| `scripts/ch5_figures.py` | 第5章の説明図（図5-1：2008年の2つの設計案の再現） | 第5章 |
 | `scripts/ch5_layout.py` | SA-10（39工程）の4通りの配置を比べる | 第5章 |
 | `scripts/scale_test.py` | 問題の大きさと計算時間 | 第5章 5.8節 |
 | `scripts/run_all.py` | 上の4つをまとめて実行 | 付録C |
