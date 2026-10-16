@@ -38,6 +38,7 @@ Google Colab でも、最初のセルで `!pip install ortools==9.15.6755 pulp==
 | `kitting/layout.py` | ルールによる配置、CP-SATの配置モデル、LNSによる改善 | 第5章 |
 | `kitting/evaluate.py` | 5つの評価指標、重なり・はみ出しの検証 | 第5章 |
 | `kitting/plot.py` | 図の出力（白黒でも読める濃淡＋工程記号） | 全体 |
+| `scripts/ch2_count.py` | 小さなトレイで配置の組合せを全通り数える | 第2章 |
 | `scripts/ch3_rule.py` | 論文の標準ビン4種と割当ルールの再現 | 第3章 |
 | `scripts/ch4_sizing.py` | 種類数 K を変えて品揃え問題を解く | 第4章 |
 | `scripts/ch4_figures.py` | 第4章の図（図4-1〜4-5、4-7、4-9） | 第4章 |
