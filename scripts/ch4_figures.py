@@ -122,7 +122,7 @@ def fig4_5(boms):
         ax.set_ylim(0, mx * 1.25)
     axes[0].set_ylabel("必要なビンの数", fontsize=8)
     fig.suptitle("最悪ケースの考え方：寸法ごとに、どのBOMでも足りる数（最大値）を共通トレイに用意する\n"
-                 "横軸はサブアッセンブリSA-01〜SA-10、黒い棒が最大のBOM", fontsize=9)
+                 "横軸は事前組立品SA-01〜SA-10、黒い棒が最大のBOM", fontsize=9)
     fig.tight_layout()
     save(fig, "fig4-5_worst_case.png")
     return r

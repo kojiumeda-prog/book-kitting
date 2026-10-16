@@ -1,4 +1,4 @@
-"""合成データ：架空の組立品「装置X」のサブアッセンブリと、その部品表（BOM）。
+"""合成データ：架空の組立品「装置X」の事前組立品と、その部品表（BOM）。
 
 実在の部品・BOM・企業とは無関係。乱数の種を固定すれば、いつでも同じデータが得られる。
 """
@@ -13,7 +13,7 @@ from .config import DEFAULT_SEED
 
 @dataclass(frozen=True)
 class Part:
-    bom: str            # サブアッセンブリ名（例: SA-10）
+    bom: str            # 事前組立品名（例: SA-10）
     part_no: str        # 部品番号（架空）
     name: str           # 部品名（架空）
     step: int           # 使用する作業工程（0始まり）
@@ -69,17 +69,17 @@ def generate_bom(name: str, n_steps: int, parts_per_step: float, rng: random.Ran
     return parts
 
 
-# サブアッセンブリの構成（名前, 工程数, 1工程あたりの平均部品数）
+# 事前組立品の構成（名前, 工程数, 1工程あたりの平均部品数）
 PORTFOLIO = [
     ("SA-01", 12, 2.0), ("SA-02", 15, 2.2), ("SA-03", 18, 2.4), ("SA-04", 20, 2.5),
     ("SA-05", 22, 2.6), ("SA-06", 25, 2.8), ("SA-07", 28, 2.8), ("SA-08", 30, 3.0),
     ("SA-09", 34, 3.0), ("SA-10", 39, 3.3),
 ]
-COMPLEX_BOM = "SA-10"   # 第5章で使う最も複雑なサブアッセンブリ（39工程）
+COMPLEX_BOM = "SA-10"   # 第5章で使う最も複雑な事前組立品（39工程）
 
 
 def generate_portfolio(seed: int = DEFAULT_SEED) -> dict[str, list[Part]]:
-    """10種類のサブアッセンブリのBOMを作る。SA-10 は39工程・部品100点以上になるように引き直す。"""
+    """10種類の事前組立品のBOMを作る。SA-10 は39工程・部品100点以上になるように引き直す。"""
     rng = random.Random(seed)
     boms = {}
     for name, n_steps, pps in PORTFOLIO:

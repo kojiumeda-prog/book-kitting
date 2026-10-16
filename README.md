@@ -32,7 +32,7 @@ Google Colab でも、最初のセルで `!pip install ortools==9.15.6755 pulp==
 | 場所 | 中身 | 本書の章 |
 | --- | --- | --- |
 | `kitting/config.py` | トレイ・ブロック・ビン候補の寸法、乱数の種 | 全体 |
-| `kitting/data.py` | 架空の装置Xのサブアッセンブリ10種類（SA-01〜SA-10）のBOMを作る | 全体 |
+| `kitting/data.py` | 架空の装置Xの事前組立品（サブアッセンブリ）10種類（SA-01〜SA-10）のBOMを作る | 全体 |
 | `kitting/bins.py` | ビンに部品が何個入るか、2008年の割当ルール | 第3章 |
 | `kitting/sizing.py` | ビン寸法の品揃え問題（MILP） | 第4章 |
 | `kitting/layout.py` | ルールによる配置、CP-SATの配置モデル、LNSによる改善 | 第5章 |
@@ -58,7 +58,7 @@ Google Colab でも、最初のセルで `!pip install ortools==9.15.6755 pulp==
 
 `python scripts/run_all.py` の実行結果です。
 
-### 第4章：ビン寸法（10種類のサブアッセンブリ、部品計589点）
+### 第4章：ビン寸法（10種類の事前組立品、部品計589点）
 
 | 寸法の決め方 | 採用したビン（外形mm） | 全BOMの合計面積 | 共通トレイの面積 | どのビンにも入らない大物 |
 | --- | --- | --- | --- | --- |
