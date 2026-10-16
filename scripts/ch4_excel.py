@@ -152,6 +152,8 @@ def build(parts):
         "solver_eng": "2",                     # シンプレックスLP
         "solver_neg": "1",                     # 制約のない変数を非負にする
         "solver_ver": "3",
+        "solver_rlx": "2",                     # 整数条件を無視しない（1だと「整数制約を無視する」がオンになる）
+        "solver_tol": "0",                     # 整数最適性 0%（最適解まで探す）
         "solver_num": "5",
         # 1) 各部品はちょうど1種類（行の合計＝1）
         "solver_lhs1": f"{q}${sumc}${r_x0}:${sumc}${r_x0 + n_p - 1}", "solver_rel1": "2", "solver_rhs1": "1",
