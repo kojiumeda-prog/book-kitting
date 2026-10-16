@@ -14,6 +14,7 @@ if not quick:
     steps.append(["scale_test.py"])
 steps.append(["ch5_figures.py"])     # scale_test.csv がないときは、先に scale_test.py を実行する
 steps.append(["ch6_tradeoff.py", *quick])   # 第6章（20分前後。--quick なら数分）
+steps.append(["ch6_figures.py"])
 steps.append(["ch7_check.py"])
 for s in steps:
     print(f"\n=== {' '.join(s)} ===", flush=True)
