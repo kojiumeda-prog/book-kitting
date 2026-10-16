@@ -14,14 +14,14 @@
 Python 3.10〜3.13 で動作を確認しています。
 
 ```bash
-git clone https://github.com/<ユーザー名>/book-kitting.git
+git clone https://github.com/kojiumeda-prog/book-kitting.git
 cd book-kitting
 python -m venv .venv
 source .venv/bin/activate          # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 
 python scripts/run_all.py --quick  # 動作確認（数分）
-python scripts/run_all.py          # 本の数値と図をすべて作り直す（10〜15分）
+python scripts/run_all.py          # 本の数値と図をすべて作り直す（30〜40分）
 python -m pytest -q                # テスト
 ```
 
@@ -32,7 +32,7 @@ Google Colab でも、最初のセルで `!pip install ortools==9.15.6755 pulp==
 | 場所 | 中身 | 本書の章 |
 | --- | --- | --- |
 | `kitting/config.py` | トレイ・ブロック・ビン候補の寸法、乱数の種 | 全体 |
-| `kitting/data.py` | 架空の装置Xの事前組立品（サブアッセンブリ）10種類（SA-01〜SA-10）のBOMを作る | 全体 |
+| `kitting/data.py` | 架空の装置Xの事前組立品10種類（SA-01〜SA-10）のBOMを作る | 全体 |
 | `kitting/bins.py` | ビンに部品が何個入るか、2008年の割当ルール | 第3章 |
 | `kitting/sizing.py` | ビン寸法の品揃え問題（MILP） | 第4章 |
 | `kitting/layout.py` | ルールによる配置、CP-SATの配置モデル、LNSによる改善 | 第5章 |
@@ -46,7 +46,10 @@ Google Colab でも、最初のセルで `!pip install ortools==9.15.6755 pulp==
 | `scripts/ch5_figures.py` | 第5章の説明図とグラフ（図5-1・5-2・5-4〜5-6・5-10〜5-13） | 第5章 |
 | `scripts/ch5_layout.py` | SA-10（39工程）の4通りの配置を比べる | 第5章 |
 | `scripts/scale_test.py` | 問題の大きさと計算時間 | 第5章 5.8節 |
-| `scripts/run_all.py` | 上の4つをまとめて実行 | 付録C |
+| `scripts/ch6_tradeoff.py` | 罰則の重み、罰則(e)、ε制約法の実験（コード6-1、6-2） | 第6章 |
+| `scripts/ch7_check.py` | 入力データ（BOMと寸法）の点検（コード7-1） | 第7章 |
+| `scripts/check_env.py` | 動作環境の確認（コードA-1） | 付録A |
+| `scripts/run_all.py` | 上のスクリプトをまとめて実行（コードC-1） | 付録C |
 | `results/` | 計算結果（CSV、JSON） | |
 | `figures/` | 本に載せる図（PNG） | |
 
