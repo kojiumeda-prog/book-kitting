@@ -7,7 +7,7 @@ import os
 import time
 
 from _common import RESULTS
-from kitting.bins import BinType
+from kitting.bins import BinType, assign_cheapest
 from kitting.config import CANDIDATE_BINS
 from kitting.data import generate_portfolio
 from kitting.evaluate import evaluate
@@ -19,7 +19,7 @@ def main():
     sizing = solve_sizing_k4(boms)
     rows = []
     for name, parts in boms.items():
-        assign = {pn: v for (bom, pn), v in sizing.assign.items() if bom == name}
+        assign = assign_cheapest(parts, sizing.chosen)
         bins = make_bins(parts, assign)
         init = layout_rule(bins, "step")
         nt = max(p.tray for p in init.values()) + 1

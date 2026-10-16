@@ -55,38 +55,48 @@ class SizingResult:
 
 def solve_sizing(boms: dict[str, list[Part]], candidates: list[BinType], K: int,
                  objective: str = "total", time_limit: int = 120) -> SizingResult:
+    # ---- コード4-1 ここから -------------------------------------------------
     prob = pulp.LpProblem("bin_sizing", pulp.LpMinimize)
 
-    # 部品ごとに、入る候補とそのとき必要な個数を前計算
+    # 前計算：部品ごとに、入る寸法 k と、そのとき必要なビンの数 n[p][k]
+    #   部品のキー p は (BOM名, 部品番号)。入らない寸法は最初から候補に入れない。
     need: dict[tuple[str, str], dict[BinType, int]] = {}
     for bom, parts in boms.items():
-        for p in parts:
-            opts = {t: n for t in candidates if (n := bins_needed(p, t)) is not None}
-            if not opts:
-                raise ValueError(f"{bom}/{p.part_no} はどの候補にも入りません")
-            need[(bom, p.part_no)] = opts
+        for part in parts:
+            need[(bom, part.part_no)] = {
+                k: n for k in candidates if (n := bins_needed(part, k)) is not None}
 
-    y = {t: pulp.LpVariable(f"y_{t.w}x{t.h}", cat="Binary") for t in candidates}
-    x = {(key, t): pulp.LpVariable(f"x_{key[0]}_{key[1]}_{t.w}x{t.h}", cat="Binary")
-         for key, opts in need.items() for t in opts}
+    # 決めること
+    y = {k: pulp.LpVariable(f"y_{k.name}", cat="Binary") for k in candidates}
+    x = {(p, k): pulp.LpVariable(f"x_{p[0]}_{p[1]}_{k.name}", cat="Binary")
+         for p, opts in need.items() for k in opts}
 
-    for key, opts in need.items():
-        prob += pulp.lpSum(x[key, t] for t in opts) == 1          # どれか1種類に入れる
-        for t in opts:
-            prob += x[key, t] <= y[t]                              # 採用した寸法だけ
-    prob += pulp.lpSum(y.values()) <= K                            # K種類まで
+    # 守ること
+    for p, opts in need.items():
+        prob += pulp.lpSum(x[p, k] for k in opts) == 1      # どれか1種類に入れる
+        for k in opts:
+            prob += x[p, k] <= y[k]                          # 採用した寸法だけ
+    prob += pulp.lpSum(y.values()) <= K                      # K種類まで
+    # ---- コード4-1 ここまで -------------------------------------------------
+    if bad := [p for p, opts in need.items() if not opts]:
+        raise ValueError(f"どの寸法候補にも入らない部品があります: {bad}")
 
     if objective == "total":
-        prob += pulp.lpSum(t.area * n * x[key, t] for key, opts in need.items() for t, n in opts.items())
+        # 良し悪しの基準：必要なトレイ面積の合計
+        prob += pulp.lpSum(k.area * n * x[p, k]
+                           for p, opts in need.items() for k, n in opts.items())
     elif objective == "worst":
-        z = {t: pulp.LpVariable(f"z_{t.w}x{t.h}", lowBound=0, cat="Integer") for t in candidates}
+        # ---- コード4-3 ここから ---------------------------------------------
+        z = {k: pulp.LpVariable(f"z_{k.name}", lowBound=0, cat="Integer")
+             for k in candidates}
         for bom in boms:
-            for t in candidates:
-                terms = [n * x[key, t] for key, opts in need.items() if key[0] == bom
-                         for tt, n in opts.items() if tt == t]
+            for k in candidates:
+                terms = [opts[k] * x[p, k] for p, opts in need.items()
+                         if p[0] == bom and k in opts]
                 if terms:
-                    prob += z[t] >= pulp.lpSum(terms)                # どのBOMでも足りる個数
-        prob += pulp.lpSum(t.area * z[t] for t in candidates)
+                    prob += z[k] >= pulp.lpSum(terms)        # どのBOMでも足りる個数
+        prob += pulp.lpSum(k.area * z[k] for k in candidates)  # 共通トレイの面積
+        # ---- コード4-3 ここまで ---------------------------------------------
     else:
         raise ValueError(objective)
 
@@ -95,12 +105,12 @@ def solve_sizing(boms: dict[str, list[Part]], candidates: list[BinType], K: int,
     prob.solve(solver)
     sec = time.perf_counter() - t0
 
-    chosen = sorted(t for t in candidates if y[t].value() > 0.5)
+    chosen = sorted(k for k in candidates if y[k].value() > 0.5)
     assign = {}
-    for key, opts in need.items():
-        for t, n in opts.items():
-            if x[key, t].value() > 0.5:
-                assign[key] = (t, n)
+    for p, opts in need.items():
+        for k, n in opts.items():
+            if x[p, k].value() > 0.5:
+                assign[p] = (k, n)
     return SizingResult(objective, K, chosen, assign, pulp.value(prob.objective),
                         pulp.LpStatus[prob.status], sec)
 

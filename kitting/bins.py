@@ -81,3 +81,17 @@ def assign_smallest(parts: list[Part], types: list[BinType]):
 def area_of(assign: dict, bulk: list[Part] = ()) -> int:
     """必要なトレイ面積 [ブロック]＝ビンの面積の合計＋大物の直置き面積"""
     return sum(t.area * n for t, n in assign.values()) + sum(bulk_area(p) for p in bulk)
+
+
+def assign_cheapest(parts: list[Part], types: list[BinType]) -> dict[str, tuple[BinType, int]]:
+    """寸法が決まった後の割当：部品ごとに、必要な面積（ビン1個の面積×個数）が最小になるビンを選ぶ。
+    同じ面積ならビンの個数が少ないほう、さらに同じなら小さいビンを選ぶ（結果が一通りに決まる）。
+    第5章では、第4章で選んだ寸法をこの方法で各部品に割り当てる。"""
+    out = {}
+    for p in parts:
+        opts = [(t.area * n, n, t.area, t.w, t) for t in types if (n := bins_needed(p, t)) is not None]
+        if not opts:
+            raise ValueError(f"{p.part_no} は選んだ寸法のどれにも入りません")
+        best = min(opts, key=lambda o: o[:4])
+        out[p.part_no] = (best[4], best[1])
+    return out

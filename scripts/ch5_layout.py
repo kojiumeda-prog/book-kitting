@@ -15,7 +15,7 @@ import os
 import time
 
 from _common import FIGURES, RESULTS
-from kitting.bins import BinType
+from kitting.bins import BinType, assign_cheapest
 from kitting.config import CANDIDATE_BINS
 from kitting.data import COMPLEX_BOM, generate_portfolio
 from kitting.evaluate import check_feasible, evaluate
@@ -33,7 +33,7 @@ def main():
 
     boms = generate_portfolio()
     sizing = solve_sizing(boms, [BinType(*t) for t in CANDIDATE_BINS], K=4, objective="worst")
-    assign = {pn: v for (bom, pn), v in sizing.assign.items() if bom == COMPLEX_BOM}
+    assign = assign_cheapest(boms[COMPLEX_BOM], sizing.chosen)   # 選んだ4種類で、面積が最小のビンに入れる
     bins = make_bins(boms[COMPLEX_BOM], assign)
     area = sum(b.type.area for b in bins)
     print(f"{COMPLEX_BOM}: 部品{len(boms[COMPLEX_BOM])}点, ビン{len(bins)}個, 面積{area}ブロック, "

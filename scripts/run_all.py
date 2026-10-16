@@ -9,7 +9,7 @@ import os
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 quick = ["--quick"] if "--quick" in sys.argv else []
-steps = [["ch3_rule.py"], ["ch4_sizing.py"], ["ch5_layout.py", *quick]]
+steps = [["ch3_rule.py"], ["ch4_sizing.py"], ["ch4_figures.py"], ["ch5_layout.py", *quick]]
 if not quick:
     steps.append(["scale_test.py"])
 for s in steps:
