@@ -12,7 +12,8 @@ quick = ["--quick"] if "--quick" in sys.argv else []
 steps = [["check_env.py"], ["ch2_count.py"], ["ch3_rule.py"], ["ch3_figures.py"], ["ch4_sizing.py"], ["ch4_figures.py"], ["ch4_excel.py"], ["ch5_layout.py", *quick]]
 if not quick:
     steps.append(["scale_test.py"])
-steps.append(["ch5_figures.py"])     # scale_test.csv がないときは、先に scale_test.py を実行する
+steps.append(["ch5_figures.py"])
+steps.append(["ch1_figures.py"])   # 図1-5は第5章の配置を使う     # scale_test.csv がないときは、先に scale_test.py を実行する
 steps.append(["ch6_tradeoff.py", *quick])   # 第6章（20分前後。--quick なら数分）
 steps.append(["ch6_figures.py"])
 steps.append(["ch7_check.py"])
