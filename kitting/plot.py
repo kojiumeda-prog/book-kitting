@@ -79,7 +79,7 @@ def draw_k_curve(rows: list[dict], path: str, thesis: dict | None = None):
             ax.annotate(f"{thesis[obj]:,}", (4, thesis[obj]), xytext=(8, -10),
                         textcoords="offset points", fontsize=7)
         ax.set_title(title, fontsize=9)
-        ax.set_xlabel("採用するビン寸法の種類数 K", fontsize=8)
+        ax.set_xlabel("採用する部品箱寸法の種類数 K", fontsize=8)
         ax.set_ylabel("必要なトレイ面積 [ブロック]", fontsize=8)
         ax.set_xticks(ks)
         ax.set_ylim(0, max(vs) * 1.15)

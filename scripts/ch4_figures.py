@@ -73,7 +73,7 @@ def fig4_2_3_4(boms):
             if r.assign[("SA-01", p.part_no)][0] == k:
                 c.set_linewidth(2.0)
                 c.get_text().set_fontweight("bold")
-    ax.set_title("部品×寸法候補ごとの必要ビン数 n（—は入らない）\n"
+    ax.set_title("部品×寸法候補ごとの必要部品箱数 n（—は入らない）\n"
                  "灰色の列＝採用した寸法（y=1）、太枠＝割り当てた組合せ（x=1）。SA-01、K=3の解", fontsize=9)
     save(fig, "fig4-2_n_matrix.png")
 
@@ -89,7 +89,7 @@ def fig4_2_3_4(boms):
         ax.text(k.w / 2, k.h / 2, k.name, ha="center", va="center", fontsize=9, fontweight="bold")
         lines = [f"{p.name}（{p.w_mm}×{p.l_mm}）×{n}個" for p, n in groups[k]]
         total = sum(n for _, n in groups[k])
-        ax.text(0, k.h + 0.5, f"ビン{total}個\n" + "\n".join(lines), va="top", fontsize=7)
+        ax.text(0, k.h + 0.5, f"部品箱{total}個\n" + "\n".join(lines), va="top", fontsize=7)
         ax.set_xlim(-0.2, max(2.5, k.w) + 0.2)
         ax.set_ylim(k.h + 0.5 + 0.42 * (len(lines) + 1), -0.3)
         ax.set_aspect("equal")
@@ -120,7 +120,7 @@ def fig4_5(boms):
         ax.set_xticklabels([b[-2:] for b in names], fontsize=6)
         ax.tick_params(axis="y", labelsize=7)
         ax.set_ylim(0, mx * 1.25)
-    axes[0].set_ylabel("必要なビンの数", fontsize=8)
+    axes[0].set_ylabel("必要な部品箱の数", fontsize=8)
     fig.suptitle("最悪ケースの考え方：寸法ごとに、どのBOMでも足りる数（最大値）を共通トレイに用意する\n"
                  "横軸は事前組立品SA-01〜SA-10、黒い棒が最大のBOM", fontsize=9)
     fig.tight_layout()
@@ -129,7 +129,7 @@ def fig4_5(boms):
 
 
 def fig4_7():
-    """ブロック倍数のビンがトレイの格子に収まる様子と、入れ替えの例"""
+    """ブロック倍数の部品箱がトレイの格子に収まる様子と、入れ替えの例"""
     fig, (a1, a2) = plt.subplots(1, 2, figsize=(10, 3.2), gridspec_kw={"width_ratios": [16, 9]})
     for ax in (a1, a2):
         ax.set_aspect("equal")
@@ -150,7 +150,7 @@ def fig4_7():
                 color="white" if lab == "16" else "black")
     a1.set_xlim(-0.2, TRAY_W + 0.2)
     a1.set_ylim(TRAY_H + 0.2, -0.2)
-    a1.set_title("(a) 1・4・8・16ブロックのビンはすき間なく並ぶ（数字はブロック数）", fontsize=8)
+    a1.set_title("(a) 1・4・8・16ブロックの部品箱はすき間なく並ぶ（数字はブロック数）", fontsize=8)
     # 右：8ブロック1個 ＝ 4ブロック1個＋1ブロック4個
     a2.add_patch(Rectangle((0, 0), 4, 2, fc="0.6", ec="black", lw=0.8))
     a2.text(2, 1, "8", ha="center", va="center", fontsize=9)
@@ -163,12 +163,12 @@ def fig4_7():
     a2.set_xlim(-0.2, 9.2)
     a2.set_ylim(2.6, -0.4)
     a2.set_title("(b) 入れ替えの例：8ブロック1個の場所に4ブロック1個と1ブロック4個", fontsize=8)
-    fig.suptitle("ブロックの整数倍にそろえたビン", fontsize=10)
+    fig.suptitle("ブロックの整数倍にそろえた部品箱", fontsize=10)
     save(fig, "fig4-7_block_multiples.png")
 
 
 def fig4_9(boms, r4):
-    """第5章への入力：SA-10のビン一覧"""
+    """第5章への入力：SA-10の部品箱一覧"""
     cnt = Counter()
     for k, n in assign_cheapest(boms[COMPLEX_BOM], r4.chosen).values():
         cnt[k] += n
@@ -183,7 +183,7 @@ def fig4_9(boms, r4):
     tb.scale(1, 1.4)
     for j in range(4):
         tb[(len(rows), j)].get_text().set_fontweight("bold")
-    ax.set_title(f"SA-10（39工程・部品{len(boms[COMPLEX_BOM])}点）に必要なビン：第5章への入力\n"
+    ax.set_title(f"SA-10（39工程・部品{len(boms[COMPLEX_BOM])}点）に必要な部品箱：第5章への入力\n"
                  f"トレイ1枚は{TRAY_W * TRAY_H}ブロックなので、面積の上では最低"
                  f"{-(-sum(k.area * n for k, n in cnt.items()) // (TRAY_W * TRAY_H))}枚", fontsize=8)
     save(fig, "fig4-9_sa10_bins.png")

@@ -1,18 +1,18 @@
-"""第4章：ビンの寸法を決める（品揃え問題）を混合整数計画（MILP）で解く。
+"""第4章：部品箱の寸法を決める（品揃え問題）を混合整数計画（MILP）で解く。
 
 決めること
-    y[k]    : 寸法候補 k を標準ビンとして採用するか（0/1）
-    x[p,k]  : 部品 p を寸法 k のビンに入れるか（0/1）
+    y[k]    : 寸法候補 k を標準部品箱として採用するか（0/1）
+    x[p,k]  : 部品 p を寸法 k の部品箱に入れるか（0/1）
 守ること
     各部品はちょうど1種類の寸法に入れる               sum_k x[p,k] = 1
     採用した寸法にしか入れられない                     x[p,k] <= y[k]
     採用する種類は K 種類まで                          sum_k y[k] <= K
 良し悪しの基準（2通り）
-    "total": すべてのBOMで必要なビン面積の合計を最小にする
+    "total": すべてのBOMで必要な部品箱面積の合計を最小にする
     "worst": BOMをまたいで共通のトレイを作る。寸法ごとに「どのBOMでも足りる個数」z[k] を用意し、
              その面積 sum_k area[k] * z[k] を最小にする（論文の Worst Case Scenario を最適化したもの）
 
-部品がその寸法に何個入り、ビンが何個要るかは bins.bins_needed で事前に計算しておく。
+部品がその寸法に何個入り、部品箱が何個要るかは bins.bins_needed で事前に計算しておく。
 こうすると制約も目的もすべて一次式になり、Excelのソルバー（シンプレックスLP）でも同じ問題が解ける。
 """
 from __future__ import annotations
@@ -31,7 +31,7 @@ class SizingResult:
     objective: str
     K: int
     chosen: list[BinType]
-    assign: dict[tuple[str, str], tuple[BinType, int]]   # (BOM名, 部品番号) -> (ビン, 個数)
+    assign: dict[tuple[str, str], tuple[BinType, int]]   # (BOM名, 部品番号) -> (部品箱, 個数)
     value: float           # 目的関数値 [ブロック]
     status: str
     seconds: float
@@ -58,7 +58,7 @@ def solve_sizing(boms: dict[str, list[Part]], candidates: list[BinType], K: int,
     # ---- コード4-1 ここから -------------------------------------------------
     prob = pulp.LpProblem("bin_sizing", pulp.LpMinimize)
 
-    # 前計算：部品ごとに、入る寸法 k と、そのとき必要なビンの数 n[p][k]
+    # 前計算：部品ごとに、入る寸法 k と、そのとき必要な部品箱の数 n[p][k]
     #   部品のキー p は (BOM名, 部品番号)。入らない寸法は最初から候補に入れない。
     need: dict[tuple[str, str], dict[BinType, int]] = {}
     for bom, parts in boms.items():

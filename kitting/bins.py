@@ -1,4 +1,4 @@
-"""ビンの寸法と、部品をビンに入れるときの計算（第3章・第4章）。"""
+"""部品箱の寸法と、部品を部品箱に入れるときの計算（第3章・第4章）。"""
 from __future__ import annotations
 
 import math
@@ -34,8 +34,8 @@ class BinType:
 
 
 def capacity(part: Part, bt: BinType) -> int:
-    """1つのビンに入る部品の数。入らなければ0。
-    小物（hardware）は寸法が入れば数量に関係なく1つのビンにまとめる（論文と同じ扱い）。
+    """1つの部品箱に入る部品の数。入らなければ0。
+    小物（hardware）は寸法が入れば数量に関係なく1つの部品箱にまとめる（論文と同じ扱い）。
     それ以外は、部品の外接矩形を2通りの向きで並べ、多く入るほうを採る。"""
     iw, ih = bt.inner_mm
     best = 0
@@ -48,23 +48,23 @@ def capacity(part: Part, bt: BinType) -> int:
 
 
 def bins_needed(part: Part, bt: BinType) -> int | None:
-    """その部品に必要なビンの数。入らなければ None。"""
+    """その部品に必要な部品箱の数。入らなければ None。"""
     cap = capacity(part, bt)
     return None if cap == 0 else math.ceil(part.qty / cap)
 
 
 def bulk_area(part: Part) -> int:
-    """どのビンにも入らない大物部品を、トレイに直置きするときの面積 [ブロック]。
+    """どの部品箱にも入らない大物部品を、トレイに直置きするときの面積 [ブロック]。
     論文の「unlimited size」と同じく、外接矩形をブロック単位に切り上げて数量分を足す。"""
     return math.ceil(part.w_mm / BLOCK_MM) * math.ceil(part.l_mm / BLOCK_MM) * part.qty
 
 
 def assign_smallest(parts: list[Part], types: list[BinType]):
     """第3章：2008年のExcelと同じ割当ルール。
-    部品が入る最も小さい（面積の小さい）ビンを選び、必要個数を数える。
-    どのビンにも入らない部品は「大物」として別に返す。
+    部品が入る最も小さい（面積の小さい）部品箱を選び、必要個数を数える。
+    どの部品箱にも入らない部品は「大物」として別に返す。
 
-    戻り値: (割当 {部品番号: (ビン, 個数)}, 大物部品のリスト)"""
+    戻り値: (割当 {部品番号: (部品箱, 個数)}, 大物部品のリスト)"""
     order = sorted(types, key=lambda t: (t.area, t.w))
     out, bulk = {}, []
     for p in parts:
@@ -79,13 +79,13 @@ def assign_smallest(parts: list[Part], types: list[BinType]):
 
 
 def area_of(assign: dict, bulk: list[Part] = ()) -> int:
-    """必要なトレイ面積 [ブロック]＝ビンの面積の合計＋大物の直置き面積"""
+    """必要なトレイ面積 [ブロック]＝部品箱の面積の合計＋大物の直置き面積"""
     return sum(t.area * n for t, n in assign.values()) + sum(bulk_area(p) for p in bulk)
 
 
 def assign_cheapest(parts: list[Part], types: list[BinType]) -> dict[str, tuple[BinType, int]]:
-    """寸法が決まった後の割当：部品ごとに、必要な面積（ビン1個の面積×個数）が最小になるビンを選ぶ。
-    同じ面積ならビンの個数が少ないほう、さらに同じなら小さいビンを選ぶ（結果が一通りに決まる）。
+    """寸法が決まった後の割当：部品ごとに、必要な面積（部品箱1個の面積×個数）が最小になる部品箱を選ぶ。
+    同じ面積なら部品箱の個数が少ないほう、さらに同じなら小さい部品箱を選ぶ（結果が一通りに決まる）。
     第5章では、第4章で選んだ寸法をこの方法で各部品に割り当てる。"""
     out = {}
     for p in parts:

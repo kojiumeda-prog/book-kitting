@@ -1,9 +1,9 @@
-"""第5章：最も複雑な事前組立品（SA-10、39工程）のビンをトレイに並べ、4つの方法を比べる。
+"""第5章：最も複雑な事前組立品（SA-10、39工程）の部品箱をトレイに並べ、4つの方法を比べる。
 
     python scripts/ch5_layout.py            # 本の数値を再現（数分）
     python scripts/ch5_layout.py --quick    # 短い計算時間で動作確認（1分程度）
 
-  ① サイズ順ルール      : 小さいビンから上・左に詰める（2008年のサイズ順の配置、図3-5(b)）
+  ① サイズ順ルール      : 小さい部品箱から上・左に詰める（2008年のサイズ順の配置、図3-5(b)）
   ② 枚数のみ最適化      : CP-SATでトレイ枚数を最小化
   ③ 作業順ルール        : 工程順に左の列から詰める（2008年の作業順の配置、図3-5(a)を単純なルールで）
   ④ 作業順の最適化（LNS）: ③を初期解に、工程を数個ずつ解き直して罰則を最小化
@@ -33,11 +33,11 @@ def main():
 
     boms = generate_portfolio()
     sizing = solve_sizing(boms, [BinType(*t) for t in CANDIDATE_BINS], K=4, objective="worst")
-    assign = assign_cheapest(boms[COMPLEX_BOM], sizing.chosen)   # 選んだ4種類で、面積が最小のビンに入れる
+    assign = assign_cheapest(boms[COMPLEX_BOM], sizing.chosen)   # 選んだ4種類で、面積が最小の部品箱に入れる
     bins = make_bins(boms[COMPLEX_BOM], assign)
     area = sum(b.type.area for b in bins)
-    print(f"{COMPLEX_BOM}: 部品{len(boms[COMPLEX_BOM])}点, ビン{len(bins)}個, 面積{area}ブロック, "
-          f"ビン寸法 {[t.name for t in sizing.chosen]}")
+    print(f"{COMPLEX_BOM}: 部品{len(boms[COMPLEX_BOM])}点, 部品箱{len(bins)}個, 面積{area}ブロック, "
+          f"部品箱寸法 {[t.name for t in sizing.chosen]}")
 
     layouts, info = {}, {}
 

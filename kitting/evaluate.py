@@ -24,8 +24,8 @@ def evaluate(bins: list[Bin], pl: dict[int, Placement]) -> dict:
     """5つの指標
     trays         : 使ったトレイ枚数
     split_steps   : 部品が2枚以上のトレイにまたがる工程の数
-    avg_spread    : 工程ごとのビンを囲む長方形の縦＋横 [ブロック] の平均（トレイごとに合計）
-    order_match   : 工程の違うビンの組のうち、トレイ→列→行の読み順が工程順と一致する割合
+    avg_spread    : 工程ごとの部品箱を囲む長方形の縦＋横 [ブロック] の平均（トレイごとに合計）
+    order_match   : 工程の違う部品箱の組のうち、トレイ→列→行の読み順が工程順と一致する割合
     tray_switches : 工程順に作業したときに別のトレイへ移る（歩く、または体を向け直す）回数
     """
     steps = sorted({b.step for b in bins})

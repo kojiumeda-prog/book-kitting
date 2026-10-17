@@ -6,7 +6,7 @@
 図1-2：キットの流れと、どこまでが外段取りか
 図1-3：組む時間の内訳のイメージ
 図1-4：部品をトレイに並べる3つの方法
-図1-5：トレイにビンが並んだ様子（第5章の配置をもとに描く）
+図1-5：トレイに部品箱が並んだ様子（第5章の配置をもとに描く）
 """
 import json
 import os
@@ -139,7 +139,7 @@ def fig1_3():
 # ---------------------------------------------------------------- 図1-4
 def fig1_4():
     fig, axes = plt.subplots(1, 3, figsize=(12, 3.9))
-    titles = ["① フォームを部品の形に切り抜く", "② 切り目入りのウレタンフォーム", "③ 標準ビン＋印刷シート"]
+    titles = ["① フォームを部品の形に切り抜く", "② 切り目入りのウレタンフォーム", "③ 標準部品箱＋印刷シート"]
     for ax, t in zip(axes, titles):
         ax.set_xlim(-0.3, 8.3)
         ax.set_ylim(-1.2, 4.6)
@@ -166,7 +166,7 @@ def fig1_4():
             fc = "white" if (c, r) in removed else "0.85"
             a.add_patch(Rectangle((x, y), 0.5, 0.5, fc=fc, ec="0.4", lw=0.4))
     a.text(4.0, -0.6, "サイコロを押し出して穴を作る。穴はサイコロの倍数の大きさ", ha="center", fontsize=8.5)
-    # ③ 印刷シート＋ビン
+    # ③ 印刷シート＋部品箱
     a = axes[2]
     a.patches[-1].set_facecolor("white")
     bins = [(0.2, 2.2, 1.6, 1.6, "A"), (2.0, 2.2, 1.6, 1.6, "B"), (3.8, 2.9, 0.8, 0.8, "B"),
@@ -176,7 +176,7 @@ def fig1_4():
         a.add_patch(FancyBboxPatch((x + 0.05, y + 0.05), w - 0.1, h - 0.1, boxstyle="round,pad=0,rounding_size=0.1",
                                    fc="0.9", ec="black", lw=0.8))
         a.text(x + w / 2, y + h / 2, t, ha="center", va="center", fontsize=9)
-    a.text(4.0, -0.6, "数種類の標準ビンを、工程記号の入った配置図の上に置く", ha="center", fontsize=8.5)
+    a.text(4.0, -0.6, "数種類の標準部品箱を、工程記号の入った配置図の上に置く", ha="center", fontsize=8.5)
     fig.tight_layout()
     save(fig, "fig1-4_three_methods.png")
 
@@ -193,7 +193,7 @@ def fig1_5():
     ax.set_ylim(H + 1.3, -0.8)
     ax.text(W / 2, H + 0.95, "金属製のトレイ（1200×600mm、カートに備え付け）。濃い灰色の枠は高さ約4cmの縁",
             ha="center", va="center", fontsize=8.5)
-    ax.set_title("トレイにビンが並んだ様子（上から見た図、SA-10の1枚目）。記号は工程", fontsize=10)
+    ax.set_title("トレイに部品箱が並んだ様子（上から見た図、SA-10の1枚目）。記号は工程", fontsize=10)
     save(fig, "fig1-5_tray.png")
 
 

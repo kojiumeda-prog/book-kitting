@@ -27,7 +27,7 @@ def make_sample(path):
     rows[5]["l_mm"] = rows[5]["l_mm"] / 10  # cmで入力してしまった
     rows[8]["qty"] = 0                      # 数量0
     rows[11]["step"] = ""                   # 工程番号の抜け
-    rows[14]["w_mm"], rows[14]["l_mm"] = 650, 700   # どのビンにも入らない大物（桁の打ちまちがい）
+    rows[14]["w_mm"], rows[14]["l_mm"] = 650, 700   # どの部品箱にも入らない大物（桁の打ちまちがい）
     with open(path, "w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=["bom", "part_no", "name", "step", "w_mm", "l_mm", "qty", "hardware"],
                            extrasaction="ignore")
@@ -66,7 +66,7 @@ def check_rows(rows, bin_types, min_mm=5, max_mm=600):
         part = Part(r["bom"], pn, r.get("name", ""), 0, "", int(min(w, l)), int(max(w, l)),
                     max(q, 1), str(r.get("hardware")) == "1")
         if all(bins_needed(part, t) is None for t in bin_types):
-            problems.append((i, pn, "どのビンにも入らない（大物として別に置くか、寸法を確かめる）"))
+            problems.append((i, pn, "どの部品箱にも入らない（大物として別に置くか、寸法を確かめる）"))
     return problems
 # ---- コード7-1 ここまで ---------------------------------------------------
 

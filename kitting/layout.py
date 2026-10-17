@@ -1,6 +1,6 @@
-"""第5章：ビンをトレイに並べる。
+"""第5章：部品箱をトレイに並べる。
 
-  layout_rule      : 小さいビンから上の行・左の列に詰める貪欲法（2008年のサイズ順の配置、本書 図3-5(b)）
+  layout_rule      : 小さい部品箱から上の行・左の列に詰める貪欲法（2008年のサイズ順の配置、本書 図3-5(b)）
   TrayModel        : CP-SAT による配置モデル
       sequence=False -> トレイ枚数の最小化
       sequence=True  -> 枚数を固定し、作業順・まとまりの罰則を最小化
@@ -51,7 +51,7 @@ class Placement:
 
 
 def make_bins(parts: list[Part], assign: dict[str, tuple[BinType, int]]) -> list[Bin]:
-    """部品の割当結果から、トレイに置くビンの一覧を作る（工程順）"""
+    """部品の割当結果から、トレイに置く部品箱の一覧を作る（工程順）"""
     bins: list[Bin] = []
     for p in sorted(parts, key=lambda p: (p.step, p.part_no)):
         t, n = assign[p.part_no]
@@ -64,7 +64,7 @@ def make_bins(parts: list[Part], assign: dict[str, tuple[BinType, int]]) -> list
 def layout_rule(bins: list[Bin], order: str = "size", max_trays: int = 10) -> dict[int, Placement]:
     """単純なルールで並べる（貪欲法）。
 
-    order="size": 小さいビンから順に、すべてのトレイの上の行・左の列から空き場所に詰める（First-Fit）。
+    order="size": 小さい部品箱から順に、すべてのトレイの上の行・左の列から空き場所に詰める（First-Fit）。
                   2008年の「サイズ順の配置」の考え方（本書 図3-5(b)）。
     order="step": 工程順に、今のトレイの左の列・上の行から詰め、入らなくなったら次のトレイへ進む。
                   2008年の「作業順の配置」（本書 図3-5(a)）を単純なルールで再現したもの。CP-SATの初期解（ヒント）にも使う。
@@ -195,7 +195,7 @@ class TrayModel:
             an = m.NewIntVar(0, KEYMAX, f"anchor{s}")
             m.AddMinEquality(an, keys)
             anchor[s] = an
-            if tail_w:                                            # 第6章：工程の最後のビン
+            if tail_w:                                            # 第6章：工程の最後の部品箱
                 en = m.NewIntVar(0, KEYMAX, f"end{s}")
                 m.AddMaxEquality(en, keys)
                 tail[s] = en
@@ -257,7 +257,7 @@ def solve_sequence(bins, n_trays, det_time=120.0, extra_trays=2, hint=None):
 
 def penalty_of(bins: list[Bin], pl: dict[int, Placement], n_trays: int, exact: bool = True,
                **weights) -> float:
-    """与えた配置の罰則（作業順モデルの目的関数値）を計算する。全ビンを固定して解くだけ。
+    """与えた配置の罰則（作業順モデルの目的関数値）を計算する。全部品箱を固定して解くだけ。
     exact=False なら、トレイは n_trays 枚「まで」（第6章のε制約法）。"""
     mdl = TrayModel(bins, n_trays, sequence=True, fix_trays=n_trays if exact else None, **weights)
     for b in bins:
@@ -275,7 +275,7 @@ def improve_lns(bins: list[Bin], init: dict[int, Placement], n_trays: int,
                 log=print, exact: bool = True, **weights):
     """大近傍探索（LNS）：工程を数個ずつ順番に「解き直し」て、配置を少しずつ良くする。
 
-    全体を一度に解くと時間がかかる大きな問題でも、一部の工程のビンだけを動かし、
+    全体を一度に解くと時間がかかる大きな問題でも、一部の工程の部品箱だけを動かし、
     残りを固定した小さな問題なら1スレッドで速く解ける。
     1スレッド＋決定的時間で解くので、何度実行しても同じ結果になる（再現性がある）。
     """
@@ -293,7 +293,7 @@ def improve_lns(bins: list[Bin], init: dict[int, Placement], n_trays: int,
                     mdl.m.AddHint(a["t"], p.tray)
                     mdl.m.AddHint(a["x"], p.x)
                     mdl.m.AddHint(a["y"], p.y)
-                else:                                  # 窓の外のビンは今の位置に固定
+                else:                                  # 窓の外の部品箱は今の位置に固定
                     mdl.m.Add(a["t"] == p.tray)
                     mdl.m.Add(a["x"] == p.x)
                     mdl.m.Add(a["y"] == p.y)

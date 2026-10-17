@@ -5,14 +5,14 @@
     python scripts/ch5_figures.py
 
 図5-1 ：2008年の2つの設計案（作業順の配置／サイズ順の配置）を SA-03 で再現（本では第3章の図3-5として載せ、第5章は参照）
-図5-2 ：トレイの格子とビンの位置の表し方、ファーストフィットの手順
+図5-2 ：トレイの格子と部品箱の位置の表し方、ファーストフィットの手順
 図5-4 ：CP-SATの探索（仮に決める→絞り込む→行き詰まったら戻る）
 図5-5 ：区間変数と「重ならない」の意味
 図5-6 ：トレイを横につないで1枚の板とみなす座標変換
 図5-10：4つの配置方法の指標の比較
 図5-11：4つの配置方法の1枚目のトレイ
 図5-12：LNSの窓ごとの罰則の推移
-図5-13：ビンの数と計算時間
+図5-13：部品箱の数と計算時間
 """
 import csv
 import json
@@ -63,14 +63,14 @@ def fig5_1():
     steps = sorted({b.step for b in bins})
     rank = {s: i for i, s in enumerate(steps)}
     layouts = [("(a) 作業順の配置：工程ごとにまとめ、左から工程順に並べる", layout_rule(bins, "step")),
-               ("(b) サイズ順の配置：小さいビンを上、大きいビンを下に詰める", layout_rule(bins, "size"))]
+               ("(b) サイズ順の配置：小さい部品箱を上、大きい部品箱を下に詰める", layout_rule(bins, "size"))]
     n_trays = max(max(p.tray for p in pl.values()) for _, pl in layouts) + 1
     fig, axes = plt.subplots(n_trays, 2, figsize=(10.4, n_trays * 2.9 + 0.9), squeeze=False)
     for c, (title, pl) in enumerate(layouts):
         for t in range(n_trays):
             draw_tray(axes[t][c], bins, pl, t, rank, len(steps))
             axes[t][c].set_title((title + "\n" if t == 0 else "") + f"トレイ{t + 1}", fontsize=9)
-    fig.suptitle(f"2008年の2つの設計案を再現（{BOM}、ビン{len(bins)}個）。"
+    fig.suptitle(f"2008年の2つの設計案を再現（{BOM}、部品箱{len(bins)}個）。"
                  "記号は工程、色が濃いほど後の工程", fontsize=10)
     fig.tight_layout()
     path = os.path.join(FIGURES, "fig5-1_two_designs.png")
@@ -122,13 +122,13 @@ def fig5_2():
                fontsize=8, arrowprops=dict(arrowstyle="->", lw=0.7))
     a.annotate("(x, y) = (11, 3)\nw = 3、h = 4、r = 1", xy=(11, 3), xytext=(10.5, 9.9),
                fontsize=8, arrowprops=dict(arrowstyle="->", lw=0.7))
-    a.set_title("(a) トレイ1枚＝横16×縦8マス（1マス75mm）。ビンの位置は左上の角の列 x・行 y、向きは r で表す",
+    a.set_title("(a) トレイ1枚＝横16×縦8マス（1マス75mm）。部品箱の位置は左上の角の列 x・行 y、向きは r で表す",
                 fontsize=8.5, loc="left", pad=14)
     t = fig.add_axes([0.66, 0.42, 0.32, 0.52])
     t.set_axis_off()
     rows = [("小型", "75×75", "1×1", "1"), ("中型", "150×150", "2×2", "4"),
             ("大型", "300×225", "4×3", "12"), ("長尺", "600×75", "8×1", "8")]
-    tb = t.table(cellText=[list(r) for r in rows], colLabels=["ビン", "外形mm", "マス（横×縦）", "ブロック"],
+    tb = t.table(cellText=[list(r) for r in rows], colLabels=["部品箱", "外形mm", "マス（横×縦）", "ブロック"],
                  loc="center", cellLoc="center")
     tb.auto_set_font_size(False)
     tb.set_fontsize(8)
@@ -147,7 +147,7 @@ def fig5_2():
         for j, (lab, w, h, x, y) in enumerate(seq[:i + 1]):
             box(ax, x, y, w, h, lab, g="0.35" if j == i else "0.85", color="white" if j == i else "black")
         ax.set_title(notes[i], fontsize=8, va="top", y=-0.12 if i < 3 else -0.1)
-    fig.text(0.03, 0.355, "(b) ファーストフィット：上の行の左から空きを探し、最初に置ける場所に置く（濃い色が今置いたビン）",
+    fig.text(0.03, 0.355, "(b) ファーストフィット：上の行の左から空きを探し、最初に置ける場所に置く（濃い色が今置いた部品箱）",
              fontsize=8.5)
     save(fig, "fig5-2_grid_first_fit.png")
 
@@ -169,12 +169,12 @@ def fig5_4():
         if text:
             ax.text((x1 + x2) / 2 + 0.1, (y1 + y2) / 2, text, fontsize=7.5, ha="left", va="center", color="0.25")
 
-    node(5, 4.4, "どのビンもまだ置いていない")
-    node(2.6, 3.0, "ビンAを左上に置く")
-    node(7.4, 3.0, "ビンAを右上に置く")
-    node(1.2, 1.6, "ビンBの候補が減る")
-    node(4.1, 1.6, "ビンCの置き場所がない", g="0.85")
-    node(7.4, 1.6, "ビンB、Cも置ける")
+    node(5, 4.4, "どの部品箱もまだ置いていない")
+    node(2.6, 3.0, "部品箱Aを左上に置く")
+    node(7.4, 3.0, "部品箱Aを右上に置く")
+    node(1.2, 1.6, "部品箱Bの候補が減る")
+    node(4.1, 1.6, "部品箱Cの置き場所がない", g="0.85")
+    node(7.4, 1.6, "部品箱B、Cも置ける")
     node(7.4, 0.4, "全部置けた（解）", g="0.6", lw=1.4)
     edge(5, 4.4, 2.6, 3.0, "仮に決める")
     edge(5, 4.4, 7.4, 3.0)
@@ -191,10 +191,10 @@ def fig5_4():
 
 
 def fig5_5():
-    """区間変数：横の帯と縦の帯が両方重なったときだけ、ビンが重なる"""
+    """区間変数：横の帯と縦の帯が両方重なったときだけ、部品箱が重なる"""
     fig, axes = plt.subplots(1, 2, figsize=(10.4, 3.9))
-    cases = [("(a) 横の帯は重なるが、縦の帯は重ならない → ビンは重ならない（置ける）", (1, 1, 4, 2), (3, 4, 3, 2)),
-             ("(b) 横の帯も縦の帯も重なる → ビンが重なる（置けない）", (1, 1, 4, 3), (3, 3, 3, 3))]
+    cases = [("(a) 横の帯は重なるが、縦の帯は重ならない → 部品箱は重ならない（置ける）", (1, 1, 4, 2), (3, 4, 3, 2)),
+             ("(b) 横の帯も縦の帯も重なる → 部品箱が重なる（置けない）", (1, 1, 4, 3), (3, 3, 3, 3))]
     for ax, (title, A, B) in zip(axes, cases):
         grid(ax, 9, 7)
         ax.set_xlim(-1.6, 9.3)
@@ -231,7 +231,7 @@ def fig5_6():
     box(ax, W + 3, 2, 2, 2, "", g="0.55")
     ax.text(4, 3, "t=0, x=3\nX=3", ha="center", va="center", fontsize=7, zorder=5)
     ax.text(W + 4, 3, "t=1, x=3\nX=19", ha="center", va="center", fontsize=7, color="white", zorder=5)
-    ax.set_title("2つのビンは同じ「3列目」だが、全体の列 X = 16t + x で見ると3列目と19列目なので重ならない",
+    ax.set_title("2つの部品箱は同じ「3列目」だが、全体の列 X = 16t + x で見ると3列目と19列目なので重ならない",
                  fontsize=9)
     save(fig, "fig5-6_long_board.png")
 
@@ -325,7 +325,7 @@ def fig5_12():
 
 
 def fig5_13():
-    """ビンの数と計算時間"""
+    """部品箱の数と計算時間"""
     with open(os.path.join(RESULTS, "scale_test.csv"), encoding="utf-8") as f:
         rows = list(csv.DictReader(f))
     fig, ax = plt.subplots(figsize=(7.2, 3.6))
@@ -337,7 +337,7 @@ def fig5_13():
     for r in rows:
         ax.annotate(r["bom"][-2:], (int(r["bins"]), float(r["seconds"])), xytext=(4, 3),
                     textcoords="offset points", fontsize=7, color="0.3")
-    ax.set_xlabel("ビンの数", fontsize=8)
+    ax.set_xlabel("部品箱の数", fontsize=8)
     ax.set_ylabel("計算時間（秒、LNS 2周）", fontsize=8)
     ax.tick_params(labelsize=7)
     ax.set_xlim(0, 140)
@@ -345,8 +345,8 @@ def fig5_13():
     ax.legend(fontsize=7, frameon=False, loc="upper left")
     for s in ("top", "right"):
         ax.spines[s].set_visible(False)
-    ax.set_title("ビンの数と計算時間（事前組立品10種類、数字はSA-01〜SA-10）。\n"
-                 "一度に解くのは常に4工程分なので、ビンが6倍でも2分以内", fontsize=9)
+    ax.set_title("部品箱の数と計算時間（事前組立品10種類、数字はSA-01〜SA-10）。\n"
+                 "一度に解くのは常に4工程分なので、部品箱が6倍でも2分以内", fontsize=9)
     save(fig, "fig5-13_scale.png")
 
 

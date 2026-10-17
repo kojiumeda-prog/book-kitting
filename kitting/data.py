@@ -21,7 +21,7 @@ class Part:
     w_mm: int           # 外接矩形の短辺 [mm]
     l_mm: int           # 外接矩形の長辺 [mm]
     qty: int            # 1台あたりの使用数
-    hardware: bool      # ねじ・ワッシャ等の小物（1つのビンにまとめて入れる）
+    hardware: bool      # ねじ・ワッシャ等の小物（1つの部品箱にまとめて入れる）
 
     def to_dict(self):
         return asdict(self)

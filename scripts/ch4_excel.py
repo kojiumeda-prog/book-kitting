@@ -43,7 +43,7 @@ def build(parts):
     last = col(n_k - 1)                       # L
     sumc = col(n_k)                           # M
 
-    r_n0 = 9                                  # 必要ビン数 n の表（データの1行目）
+    r_n0 = 9                                  # 必要部品箱数 n の表（データの1行目）
     r_x0 = r_n0 + n_p + 3                     # x の表
     r_y = r_x0 + n_p + 1                      # y の行
     r_cnt, r_cap = r_y + 1, r_y + 2
@@ -53,7 +53,7 @@ def build(parts):
         ws[f"A{r}"] = text
         ws[f"A{r}"].font = Font(bold=bold)
 
-    ws["A1"] = f"ビンの寸法を選ぶ（{BOM}、寸法候補{n_k}種類）― Excelソルバー版"
+    ws["A1"] = f"部品箱の寸法を選ぶ（{BOM}、寸法候補{n_k}種類）― Excelソルバー版"
     ws["A1"].font = Font(bold=True, size=13)
     label(3, "採用する種類数 K")
     ws["E3"] = K
@@ -65,12 +65,12 @@ def build(parts):
         ws[c].border = BOX
         ws[c].font = Font(bold=True)
         ws[c].alignment = Alignment(horizontal="center")
-    label(5, "ビン1個の面積（ブロック）")
+    label(5, "部品箱1個の面積（ブロック）")
     for j, k in enumerate(CAND):
         ws[f"{col(j)}5"] = k.area
 
-    # 表1：必要ビン数 n
-    ws[f"A{r_n0 - 2}"] = "① 必要なビンの数 n（前計算。空欄＝入らない）"
+    # 表1：必要部品箱数 n
+    ws[f"A{r_n0 - 2}"] = "① 必要な部品箱の数 n（前計算。空欄＝入らない）"
     ws[f"A{r_n0 - 2}"].font = Font(bold=True)
     for j, h in enumerate(["部品番号", "部品名", "寸法(mm)", "数量"]):
         ws.cell(row=r_n0 - 1, column=j + 1, value=h)
@@ -89,7 +89,7 @@ def build(parts):
                                     f"'{SHEET}'!{col(j)}$5*'{SHEET}'!{col(j)}{r})")
 
     # 表2：変数 x
-    ws[f"A{r_x0 - 2}"] = "② x：部品をその寸法のビンに入れるか（0/1、変数セル）"
+    ws[f"A{r_x0 - 2}"] = "② x：部品をその寸法の部品箱に入れるか（0/1、変数セル）"
     ws[f"A{r_x0 - 2}"].font = Font(bold=True)
     for j, h in enumerate(["部品番号", "部品名", "寸法(mm)", "数量"]):
         ws.cell(row=r_x0 - 1, column=j + 1, value=h)

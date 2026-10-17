@@ -1,10 +1,10 @@
 """第2章 コード2-1：配置の組合せを数える小さな実験。
 
-小さなトレイにビンを重ならないように置く方法が何通りあるかを、全通り数える（後戻り法）。
-ビンが増えると、通り数が爆発的に増えることを確かめる。
+小さなトレイに部品箱を重ならないように置く方法が何通りあるかを、全通り数える（後戻り法）。
+部品箱が増えると、通り数が爆発的に増えることを確かめる。
 
-    python scripts/ch2_count.py          # ビン5個まで（数秒）
-    python scripts/ch2_count.py --six    # ビン6個まで（1分以上かかる）
+    python scripts/ch2_count.py          # 部品箱5個まで（数秒）
+    python scripts/ch2_count.py --six    # 部品箱6個まで（1分以上かかる）
 """
 import sys
 import csv
@@ -18,7 +18,7 @@ from _common import RESULTS
 # ---- コード2-1 ここから ---------------------------------------------------
 def count_layouts(W, H, bins):
     """横W×縦Hマスのトレイに、bins（(w, h) のリスト）を重ならずに置く方法の数。
-    ビンは1個ずつ区別する（同じ大きさでも別のビン）。90度回転も許す。"""
+    部品箱は1個ずつ区別する（同じ大きさでも別の部品箱）。90度回転も許す。"""
     used = [[False] * W for _ in range(H)]
 
     def fits(x, y, w, h):
@@ -42,7 +42,7 @@ def count_layouts(W, H, bins):
                 for x in range(W):
                     if fits(x, y, w, h):
                         mark(x, y, w, h, True)
-                        total += place(i + 1)   # 次のビンへ
+                        total += place(i + 1)   # 次の部品箱へ
                         mark(x, y, w, h, False) # 元に戻して別の場所を試す
         return total
 
@@ -61,7 +61,7 @@ def main():
         rows.append(dict(tray=f"{W}x{H}", bins=n, shapes=" ".join(f"{w}x{h}" for w, h in pattern[:n]),
                          layouts=c, seconds=round(time.perf_counter() - t0, 3)))
         print(rows[-1])
-    # 本物の大きさ（16×8マス）で、1×1のビンだけをn個置く方法の数 = 128×127×…（順列）
+    # 本物の大きさ（16×8マス）で、1×1の部品箱だけをn個置く方法の数 = 128×127×…（順列）
     for n in (5, 10, 20, 40, 80, 126):
         c = math.perm(128, n)
         rows.append(dict(tray="16x8", bins=n, shapes="1x1のみ", layouts=f"{c:.2e}", seconds=""))
