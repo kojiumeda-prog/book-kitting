@@ -200,11 +200,11 @@ class TrayModel:
                 m.AddMaxEquality(en, keys)
                 tail[s] = en
         for s, s2 in zip(steps, steps[1:]):
-            m.Add(tmax_[s] <= tmin_[s2])                          # (c) トレイは工程順に進む
-            inv = m.NewBoolVar(f"inv{s}")                         # (d) 読み始めの逆転
+            m.Add(tmax_[s] <= tmin_[s2])                          # （制約）トレイは工程順に進む
+            inv = m.NewBoolVar(f"inv{s}")                         # (c) 読み始めの逆転
             m.Add(anchor[s2] >= anchor[s] + 1 - KEYMAX * inv)
             terms.append(inv_w * inv)
-            if tail_w:                                            # (e) 前の工程の最後より手前に、次の工程が始まる
+            if tail_w:                                            # (d) 前の工程の最後より手前に、次の工程が始まる
                 inv2 = m.NewBoolVar(f"tail{s}")
                 m.Add(anchor[s2] >= tail[s] + 1 - KEYMAX * inv2)
                 terms.append(tail_w * inv2)

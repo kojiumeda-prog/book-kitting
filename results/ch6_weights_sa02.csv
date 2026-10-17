@@ -1,0 +1,4 @@
+weights,split_w,spread_w,inv_w,trays,split_steps,n_steps,avg_spread,order_match,tray_switches,penalty,seconds,bom
+標準（第5章）,100,6,20,1,0,13,6.38,0.492,0,518.0,21.4,SA-02
+まとまり重視,100,20,5,1,0,13,6.38,0.724,0,1665.0,20.5,SA-02
+読み順重視,100,2,60,1,0,13,7.38,0.892,0,192.0,14.4,SA-02

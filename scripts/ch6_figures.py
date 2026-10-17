@@ -2,9 +2,9 @@
 
     python scripts/ch6_figures.py      # 先に ch6_tradeoff.py を実行しておく（SA-02の配置は1分ほどで計算する）
 
-図6-1：SA-02の配置（作業順ルール／第5章の罰則／罰則(e)を追加）
-図6-2：重みを3通りに変えた配置（SA-10の1枚目のトレイ）
-図6-3：重みと指標の関係
+図6-1：SA-02の配置（作業順ルール／第5章の罰則／罰則(d)を追加）
+図6-2：重みを3通りに変えた配置（SA-02）
+図6-3：重みと指標の関係（SA-10とSA-02）
 図6-5：ε制約法の解（枚数と罰則、トレイ間の移動）
 図6-6：代表的な3つの解の配置（ε=4、ε=5、第5章）
 """
@@ -74,7 +74,7 @@ def sa02_layouts():
 
 def fig6_1():
     d = sa02_layouts()
-    names = {"step_rule": "(a) 作業順ルール", "ch5": "(b) 第5章の罰則で最適化", "tail60": "(c) 罰則(e)を追加（重み60）"}
+    names = {"step_rule": "(a) 作業順ルール", "ch5": "(b) 第5章の罰則で最適化", "tail60": "(c) 罰則(d)を追加（重み60）"}
     fig, axes = plt.subplots(3, 1, figsize=(5.6, 8.4))
     for ax, k in zip(axes, names):
         m = d["metrics"][k]
@@ -92,28 +92,38 @@ def load():
 
 def fig6_2():
     d = load()
+    with open(os.path.join(RESULTS, "ch6_weights_sa02.csv"), encoding="utf-8") as f:
+        m = {r["weights"]: r for r in csv.DictReader(f)}
     fig, axes = plt.subplots(3, 1, figsize=(5.6, 8.4))
-    for ax, k in zip(axes, d["weights"]):
-        draw_tray(ax, d["bins"], d["weights"][k], title=k)
-    fig.suptitle("重みを3通りに変えた配置（SA-10の1枚目のトレイ）", fontsize=10)
+    for ax, (i, k) in zip(axes, enumerate(d["weights_sa02"])):
+        r = m[k]
+        draw_tray(ax, d["bins_sa02"], d["weights_sa02"][k],
+                  title=f"({'abc'[i]}) {k}　読み順との一致率 {float(r['order_match']):.0%}、広がり {float(r['avg_spread']):.2f}")
+    fig.suptitle("重みを3通りに変えた配置（SA-02、トレイ1枚）。記号は工程、色が濃いほど後の工程", fontsize=10)
     fig.tight_layout()
-    save(fig, "fig6-2_weights_tray1.png")
+    save(fig, "fig6-2_weights_sa02.png")
 
 
 def fig6_3():
-    with open(os.path.join(RESULTS, "ch6_weights.csv"), encoding="utf-8") as f:
-        rows = list(csv.DictReader(f))
-    fig, ax = plt.subplots(figsize=(5.2, 3.8))
-    for r, mk in zip(rows, ["o", "^", "s"]):
-        x, y = float(r["avg_spread"]), float(r["order_match"]) * 100
-        ax.scatter([x], [y], marker=mk, s=70, facecolor="white", edgecolor="black", zorder=3)
-        ax.annotate(r["weights"], (x, y), textcoords="offset points", xytext=(8, -3), fontsize=9)
-    ax.set_xlabel("まとまり（平均の広がり、マス）　← 小さいほどよい")
-    ax.set_ylabel("読み順との一致率（%）　↑ 高いほどよい")
-    ax.set_xlim(7.7, 8.4)
-    ax.set_ylim(94, 100)
-    ax.grid(lw=0.3, color="0.8")
-    ax.set_title("重みと指標の関係（SA-10、トレイ4枚）", fontsize=10)
+    fig, axes = plt.subplots(1, 2, figsize=(9.6, 3.9))
+    for ax, (fname, title, xlim, ylim) in zip(axes, [
+            ("ch6_weights.csv", "(a) SA-10（トレイ4枚、ほぼ満杯）", (7.7, 8.4), (90, 100)),
+            ("ch6_weights_sa02.csv", "(b) SA-02（トレイ1枚、余裕あり）", (6.0, 7.8), (40, 100))]):
+        with open(os.path.join(RESULTS, fname), encoding="utf-8") as f:
+            rows = list(csv.DictReader(f))
+        for r, mk in zip(rows, ["o", "^", "s"]):
+            x, y = float(r["avg_spread"]), float(r["order_match"]) * 100
+            ax.scatter([x], [y], marker=mk, s=70, facecolor="white", edgecolor="black", zorder=3)
+            dy = 6 if r["weights"] == "読み順重視" else -10      # 近い点の文字が重ならないように
+            ax.annotate(r["weights"], (x, y), textcoords="offset points", xytext=(8, dy), fontsize=8.5)
+        ax.set_xlabel("まとまり（平均の広がり、マス）　← 小さいほどよい", fontsize=8.5)
+        ax.set_ylabel("読み順との一致率（%）　↑ 高いほどよい", fontsize=8.5)
+        ax.set_xlim(*xlim)
+        ax.set_ylim(*ylim)
+        ax.grid(lw=0.3, color="0.8")
+        ax.set_title(title, fontsize=9.5)
+    fig.suptitle("重みと指標の関係（縦軸・横軸の目盛りは左右で違う）", fontsize=10)
+    fig.tight_layout()
     save(fig, "fig6-3_weights_scatter.png")
 
 
