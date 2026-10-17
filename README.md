@@ -40,6 +40,7 @@ Google Colab でも、最初のセルで `!pip install ortools==9.15.6755 pulp==
 | `kitting/plot.py` | 図の出力（白黒でも読める濃淡＋工程記号） | 全体 |
 | `scripts/ch1_figures.py` | 第1章の概念図（図1-1〜1-5） | 第1章 |
 | `scripts/ch2_count.py` | 小さなトレイで配置の組合せを全通り数える | 第2章 |
+| `scripts/ch2_figures.py` | 第2章の図（図2-2〜2-7） | 第2章 |
 | `scripts/ch3_rule.py` | 論文の標準部品箱4種と割当ルールの再現 | 第3章 |
 | `scripts/ch3_figures.py` | 第3章の図（図3-1〜3-4、3-6）と階段の計算 `results/ch3_staircase.csv` | 第3章 |
 | `scripts/ch4_sizing.py` | 種類数 K を変えて品揃え問題を解く | 第4章 |
