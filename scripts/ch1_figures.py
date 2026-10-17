@@ -35,33 +35,41 @@ def fig1_1():
         ax.set_ylim(0, 4.6)
         ax.set_axis_off()
         ax.set_title(t, fontsize=11, fontweight="bold")
-    # ①
+    # ① セル方式：部品棚がコの字に作業者を囲み、作業者は作業台と向き合う
     a = axes[0]
-    a.add_patch(Rectangle((0.2, 1.6), 3.6, 2.2, fill=False, ls="--", lw=0.9))
-    a.text(0.3, 3.6, "セル（製品専用）", fontsize=8.5)
-    rbox(a, 0.4, 1.9, 1.2, 1.4, "部品棚", fc="0.8", fs=9)
-    rbox(a, 2.4, 1.9, 1.2, 1.4, "作業台", fs=9)
-    person(a, 2.0, 2.2)
-    arrow(a, 1.85, 2.9, 1.65, 2.9)
-    a.text(2.0, 1.2, "組みながら、すぐ横の棚から取る", ha="center", fontsize=8.5)
-    # ②
+    a.add_patch(Rectangle((0.2, 1.45), 3.6, 2.85, fill=False, ls="--", lw=0.9))
+    a.text(0.3, 4.05, "セル（製品専用）", fontsize=8.5)
+    rbox(a, 0.45, 3.35, 3.1, 0.5, "部品棚", fc="0.8", fs=8.5)
+    rbox(a, 0.45, 1.75, 0.5, 1.5, "部\n品\n棚", fc="0.8", fs=8.5)
+    rbox(a, 3.05, 1.75, 0.5, 1.5, "部\n品\n棚", fc="0.8", fs=8.5)
+    rbox(a, 1.25, 1.6, 1.5, 0.45, "作業台", fs=8.5)
+    person(a, 2.0, 2.35)
+    arrow(a, 2.0, 2.95, 2.0, 3.3)
+    arrow(a, 1.72, 2.55, 1.0, 2.55)
+    arrow(a, 2.28, 2.55, 3.0, 2.55)
+    a.text(2.0, 1.05, "組みながら、振り向いて棚から取る", ha="center", fontsize=8.5)
+    # ② 部品置き場を一か所に集め、複数の作業台から取りに行く
     a = axes[1]
-    rbox(a, 0.2, 2.9, 1.4, 1.1, "部品置き場\n（一か所）", fc="0.8", fs=8.5)
-    rbox(a, 2.4, 1.6, 1.4, 1.1, "作業台", fs=9)
-    person(a, 2.15, 1.75)
-    a.annotate("", xy=(1.65, 3.25), xytext=(2.1, 2.3),
-               arrowprops=dict(arrowstyle="<|-|>", lw=1.0, ls="--"))
-    a.text(1.2, 2.25, "途中で\n歩いて取りに行く", ha="center", fontsize=8.5)
-    a.text(2.0, 1.2, "組立の途中で場を離れる", ha="center", fontsize=8.5)
-    # ③
+    rbox(a, 1.0, 3.4, 2.0, 0.8, "部品置き場\n（一か所に集約）", fc="0.8", fs=8.5)
+    for bx in (0.25, 2.55):
+        rbox(a, bx, 1.5, 1.2, 0.45, "作業台", fs=8.5)
+        person(a, bx + 0.6, 2.05)
+        a.annotate("", xy=(1.55 if bx < 1 else 2.45, 3.35), xytext=(bx + 0.6, 2.55),
+                   arrowprops=dict(arrowstyle="<|-|>", lw=1.0, ls="--"))
+    a.text(2.0, 2.55, "途中で\n歩いて\n取りに行く", ha="center", va="center", fontsize=8)
+    a.text(2.0, 1.05, "組立の途中で場を離れる", ha="center", fontsize=8.5)
+    # ③ 一か所の部品置き場で一式そろえ、カートで各作業台へ運ぶ
     a = axes[2]
-    rbox(a, 0.1, 2.9, 1.3, 1.1, "部品置き場\n（一か所）", fc="0.8", fs=8.5)
-    rbox(a, 1.6, 2.9, 1.0, 1.1, "カート\n（キット）", fc="0.92", fs=8.5)
-    rbox(a, 2.8, 2.9, 1.1, 1.1, "作業台\n（汎用）", fs=8.5)
-    arrow(a, 1.42, 3.45, 1.58, 3.45)
-    arrow(a, 2.62, 3.45, 2.78, 3.45)
-    person(a, 3.35, 2.15)
-    a.text(2.0, 1.2, "組み始める前に一式そろえて運ぶ", ha="center", fontsize=8.5)
+    rbox(a, 1.0, 3.4, 2.0, 0.8, "部品置き場\n（一か所）", fc="0.8", fs=8.5)
+    for bx in (0.5, 2.3):
+        rbox(a, bx + 0.15, 2.3, 0.9, 0.55, "カート", fc="0.92", fs=8)
+        arrow(a, 1.55 if bx < 1 else 2.45, 3.38, bx + 0.6, 2.88)
+        arrow(a, bx + 0.6, 2.28, bx + 0.6, 1.98)
+        rbox(a, bx, 1.5, 1.2, 0.45, "作業台", fs=8.5)
+    person(a, 0.25, 1.5)
+    person(a, 3.75, 1.5)
+    a.text(2.0, 2.55, "そろえて\n運ぶ", ha="center", va="center", fontsize=8)
+    a.text(2.0, 1.05, "組み始める前に一式そろえて運ぶ", ha="center", fontsize=8.5)
     for a, when in zip(axes, ["部品を取る時点：組みながら", "部品を取る時点：組みながら",
                               "部品を取る時点：組み始める前"]):
         a.add_patch(Rectangle((0.1, 0.25), 3.8, 0.55, fc="0.93", ec="black", lw=0.6))
