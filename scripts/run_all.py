@@ -9,7 +9,7 @@ import os
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 quick = ["--quick"] if "--quick" in sys.argv else []
-steps = [["check_env.py"], ["ch2_count.py"], ["ch3_rule.py"], ["ch4_sizing.py"], ["ch4_figures.py"], ["ch4_excel.py"], ["ch5_layout.py", *quick]]
+steps = [["check_env.py"], ["ch2_count.py"], ["ch3_rule.py"], ["ch3_figures.py"], ["ch4_sizing.py"], ["ch4_figures.py"], ["ch4_excel.py"], ["ch5_layout.py", *quick]]
 if not quick:
     steps.append(["scale_test.py"])
 steps.append(["ch5_figures.py"])     # scale_test.csv がないときは、先に scale_test.py を実行する
