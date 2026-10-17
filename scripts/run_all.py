@@ -18,6 +18,7 @@ steps.append(["ch6_tradeoff.py", *quick])   # 第6章（20分前後。--quick �
 steps.append(["ch6_figures.py"])
 steps.append(["ch6_concept_figures.py"])
 steps.append(["ch7_check.py"])
+steps.append(["ch7_figures.py"])
 for s in steps:
     print(f"\n=== {' '.join(s)} ===", flush=True)
     subprocess.run([sys.executable, os.path.join(HERE, s[0]), *s[1:]], check=True)

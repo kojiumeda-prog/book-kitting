@@ -52,6 +52,7 @@ Google Colab でも、最初のセルで `!pip install ortools==9.15.6755 pulp==
 | `scripts/ch6_tradeoff.py` | 罰則の重み、罰則(d)、ε制約法の実験（コード6-1、6-2） | 第6章 |
 | `scripts/ch6_figures.py` | 第6章の図（図6-1〜6-3、6-5、6-6） | 第6章 |
 | `scripts/ch6_concept_figures.py` | 第6章の概念図（図6-4、6-7〜6-9） | 第6章 |
+| `scripts/ch7_figures.py` | 第7章の図（図7-1〜7-7） | 第7章 |
 | `scripts/ch7_check.py` | 入力データ（BOMと寸法）の点検（コード7-1） | 第7章 |
 | `scripts/check_env.py` | 動作環境の確認（コードA-1） | 付録A |
 | `scripts/run_all.py` | 上のスクリプトをまとめて実行（コードC-1） | 付録C |
