@@ -76,8 +76,13 @@ def draw_k_curve(rows: list[dict], path: str, thesis: dict | None = None):
         if thesis:
             ax.scatter([4], [thesis[obj]], marker="s", facecolor="white", edgecolor="black",
                        s=45, zorder=3, label="論文の4種類＋割当ルール")
-            ax.annotate(f"{thesis[obj]:,}", (4, thesis[obj]), xytext=(8, -10),
-                        textcoords="offset points", fontsize=7)
+            if obj == "total":   # 最適化の点と重なるので、引き出し線で白い四角につなぐ
+                ax.annotate(f"{thesis[obj]:,}（論文）", (4, thesis[obj]), xytext=(14, -24),
+                            textcoords="offset points", fontsize=7, ha="left", va="center",
+                            arrowprops=dict(arrowstyle="-", lw=0.6, color="black", shrinkA=0, shrinkB=4))
+            else:                # 白い四角の真上に置く
+                ax.annotate(f"{thesis[obj]:,}", (4, thesis[obj]), xytext=(0, 7),
+                            textcoords="offset points", fontsize=7, ha="center")
         ax.set_title(title, fontsize=9)
         ax.set_xlabel("採用する部品箱寸法の種類数 K", fontsize=8)
         ax.set_ylabel("必要なトレイ面積 [ブロック]", fontsize=8)
