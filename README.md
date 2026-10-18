@@ -54,6 +54,7 @@ Google Colab でも、最初のセルで `!pip install ortools==9.15.6755 pulp==
 | `scripts/ch6_concept_figures.py` | 第6章の概念図（図6-4、6-7〜6-9） | 第6章 |
 | `scripts/ch7_figures.py` | 第7章の図（図7-1〜7-7） | 第7章 |
 | `scripts/ch8_figures.py` | 第8章の図（図8-1〜8-6。図8-3は配車、図8-4はシフトを架空データで実際に解く） | 第8章 |
+| `scripts/front_figures.py` | はじめにの図（図0-1 本書の全体像） | はじめに |
 | `scripts/ch7_check.py` | 入力データ（BOMと寸法）の点検（コード7-1） | 第7章 |
 | `scripts/check_env.py` | 動作環境の確認（コードA-1） | 付録A |
 | `scripts/run_all.py` | 上のスクリプトをまとめて実行（コードC-1） | 付録C |
