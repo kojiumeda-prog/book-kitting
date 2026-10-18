@@ -22,6 +22,7 @@ steps = [
     ["ch6_tradeoff.py", *q],                       # 第6章（約20分。--quick なら数分）
     ["ch6_figures.py"], ["ch6_concept_figures.py"],
     ["ch7_check.py"], ["ch7_figures.py"],          # 第7章
+    ["ch8_figures.py"],                            # 第8章（配車とシフトの例も解く）
 ]
 for s in steps:
     print(f"\n=== {' '.join(s)} ===", flush=True)
