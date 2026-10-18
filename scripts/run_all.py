@@ -1,6 +1,6 @@
 """本書の全結果（results/ と figures/）を作り直す。
 
-    python scripts/run_all.py           # 本の数値を再現（約30分）
+    python scripts/run_all.py           # 本の数値を再現（約1時間）
     python scripts/run_all.py --quick   # 動作確認（数分）
 """
 import subprocess
