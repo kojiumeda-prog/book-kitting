@@ -7,7 +7,7 @@
 図3-3：割当の判定の流れ（入る中で一番小さい部品箱を選ぶ）
 図3-4：中型の部品箱の一辺と、最悪ケースの必要面積（階段）
 図3-6：2008年に残った3つの宿題と、本書の章の対応
-（図3-5は scripts/ch5_figures.py の fig5-1_two_designs.png。第5章はこれを参照する）
+（図3-5は scripts/ch5_figures.py の fig3-5_two_designs.png。第5章はこれを参照する）
 """
 import csv
 import math

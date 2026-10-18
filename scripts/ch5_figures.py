@@ -1,18 +1,18 @@
-"""第5章の図（ch5_layout.py が作る図5-3・5-7〜5-9以外）を作る。
+"""第5章の図（ch5_layout.py が作る図5-2・5-6〜5-8以外）を作る。
 
     python scripts/ch5_layout.py     # 先に実行（results/ch5_layouts.json を作る）
     python scripts/scale_test.py     # 先に実行（results/scale_test.csv を作る）
     python scripts/ch5_figures.py
 
-図5-1 ：2008年の2つの設計案（作業順の配置／サイズ順の配置）を SA-03 で再現（本では第3章の図3-5として載せ、第5章は参照）
-図5-2 ：トレイの格子と部品箱の位置の表し方、ファーストフィットの手順
-図5-4 ：CP-SATの探索（仮に決める→絞り込む→行き詰まったら戻る）
-図5-5 ：区間変数と「重ならない」の意味
-図5-6 ：トレイを横につないで1枚の板とみなす座標変換
-図5-10：4つの配置方法の指標の比較
-図5-11：4つの配置方法の1枚目のトレイ
-図5-12：LNSの窓ごとの罰則の推移
-図5-13：部品箱の数と計算時間
+図3-5 ：2008年の2つの設計案（作業順の配置／サイズ順の配置）を SA-03 で再現（本では第3章の図3-5として載せ、第5章は参照）
+図5-1 ：トレイの格子と部品箱の位置の表し方、ファーストフィットの手順
+図5-3 ：CP-SATの探索（仮に決める→絞り込む→行き詰まったら戻る）
+図5-4 ：区間変数と「重ならない」の意味
+図5-5 ：トレイを横につないで1枚の板とみなす座標変換
+図5-9 ：4つの配置方法の指標の比較
+図5-10：4つの配置方法の1枚目のトレイ
+図5-11：LNSの窓ごとの罰則の推移
+図5-12：部品箱の数と計算時間
 """
 import csv
 import json
@@ -73,7 +73,7 @@ def fig5_1():
     fig.suptitle(f"2008年の2つの設計案を再現（{BOM}、部品箱{len(bins)}個）。"
                  "記号は工程、色が濃いほど後の工程", fontsize=10)
     fig.tight_layout()
-    path = os.path.join(FIGURES, "fig5-1_two_designs.png")
+    path = os.path.join(FIGURES, "fig3-5_two_designs.png")
     fig.savefig(path, dpi=200)
     plt.close(fig)
     print("saved", path)
@@ -149,7 +149,7 @@ def fig5_2():
         ax.set_title(notes[i], fontsize=8, va="top", y=-0.12 if i < 3 else -0.1)
     fig.text(0.03, 0.355, "(b) ファーストフィット：上の行の左から空きを探し、最初に置ける場所に置く（濃い色が今置いた部品箱）",
              fontsize=8.5)
-    save(fig, "fig5-2_grid_first_fit.png")
+    save(fig, "fig5-1_grid_first_fit.png")
 
 
 def fig5_4():
@@ -187,7 +187,7 @@ def fig5_4():
     ax.text(5.75, 2.25, "行き詰まったら戻り、\n別の決め方を試す", fontsize=7.5, ha="left", color="0.25")
     ax.text(4.1, 0.85, "行き詰まった理由を覚えておき、\n同じ失敗を繰り返さない（学習）", fontsize=7.5, ha="center", va="center", color="0.25")
     ax.set_title("CP-SATの探索のイメージ（数独を解くときと同じ「仮に決める・絞り込む・戻る」）", fontsize=9.5)
-    save(fig, "fig5-4_search_tree.png")
+    save(fig, "fig5-3_search_tree.png")
 
 
 def fig5_5():
@@ -212,7 +212,7 @@ def fig5_5():
         ax.set_title(title, fontsize=8.5)
     fig.suptitle("区間変数（始まり・長さ・終わり）。AddNoOverlap2Dは、横と縦の両方で帯が重なる組を禁止する", fontsize=9.5)
     fig.tight_layout()
-    save(fig, "fig5-5_intervals.png")
+    save(fig, "fig5-4_intervals.png")
 
 
 def fig5_6():
@@ -233,7 +233,7 @@ def fig5_6():
     ax.text(W + 4, 3, "t=1, x=3\nX=19", ha="center", va="center", fontsize=7, color="white", zorder=5)
     ax.set_title("2つの部品箱は同じ「3列目」だが、全体の列 X = 16t + x で見ると3列目と19列目なので重ならない",
                  fontsize=9)
-    save(fig, "fig5-6_long_board.png")
+    save(fig, "fig5-5_long_board.png")
 
 
 def load_layouts():
@@ -270,7 +270,7 @@ def fig5_10():
     fig.suptitle("4つの配置方法の比較（SA-10、トレイ枚数はどれも4枚）。"
                  "①サイズ順ルール ②枚数だけ最小化 ③作業順ルール ④作業順の最適化", fontsize=9)
     fig.tight_layout()
-    save(fig, "fig5-10_metrics.png")
+    save(fig, "fig5-9_metrics.png")
 
 
 def fig5_11():
@@ -295,7 +295,7 @@ def fig5_11():
         ax.set_title(NAMES[k], fontsize=9)
     fig.suptitle("4つの配置方法の1枚目のトレイ（SA-10）。記号は工程、色が濃いほど後の工程", fontsize=10)
     fig.tight_layout()
-    save(fig, "fig5-11_tray1.png")
+    save(fig, "fig5-10_tray1.png")
 
 
 def fig5_12():
@@ -321,7 +321,7 @@ def fig5_12():
         ax.spines[s].set_visible(False)
     ax.set_title("LNSで罰則が下がっていく様子（SA-10）。下がるのはほとんど1周目で、2周目以降はわずか",
                  fontsize=9)
-    save(fig, "fig5-12_lns_history.png")
+    save(fig, "fig5-11_lns_history.png")
 
 
 def fig5_13():
@@ -347,7 +347,7 @@ def fig5_13():
         ax.spines[s].set_visible(False)
     ax.set_title("部品箱の数と計算時間（事前組立品10種類、数字はSA-01〜SA-10）。\n"
                  "一度に解くのは常に4工程分なので、部品箱が6倍でも2分以内", fontsize=9)
-    save(fig, "fig5-13_scale.png")
+    save(fig, "fig5-12_scale.png")
 
 
 if __name__ == "__main__":

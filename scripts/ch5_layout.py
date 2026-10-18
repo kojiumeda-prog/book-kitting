@@ -69,7 +69,7 @@ def main():
         m["penalty"] = penalty_of(bins, pl, m["trays"]) if k != "size_rule" and k != "min_trays" else None
         rows.append(dict(method=names[k], **m, seconds=info[k]["seconds"]))
         print(rows[-1])
-        fig = {"size_rule": "fig5-3", "min_trays": "fig5-7", "step_rule": "fig5-8", "lns": "fig5-9"}[k]
+        fig = {"size_rule": "fig5-2", "min_trays": "fig5-6", "step_rule": "fig5-7", "lns": "fig5-8"}[k]
         draw_layout(bins, pl, f"{names[k]}（{COMPLEX_BOM}）", os.path.join(FIGURES, f"{fig}_{k}.png"))
 
     with open(os.path.join(RESULTS, "ch5_metrics.csv"), "w", newline="", encoding="utf-8") as f:
