@@ -64,7 +64,7 @@ def make_bins(parts: list[Part], assign: dict[str, tuple[BinType, int]]) -> list
 def layout_rule(bins: list[Bin], order: str = "size", max_trays: int = 10) -> dict[int, Placement]:
     """単純なルールで並べる（貪欲法）。
 
-    order="size": 小さい部品箱から順に、すべてのトレイの上の行・左の列から空き場所に詰める（First-Fit）。
+    order="size": 小さい部品箱から順に、すべてのトレイの上の行・左の列から空き場所に詰める（先詰め法、First-Fit）。
                   2008年の「サイズ順の配置」の考え方（本書 図3-5(b)）。
     order="step": 工程順に、今のトレイの左の列・上の行から詰め、入らなくなったら次のトレイへ進む。
                   2008年の「作業順の配置」（本書 図3-5(a)）を単純なルールで再現したもの。CP-SATの初期解（ヒント）にも使う。
