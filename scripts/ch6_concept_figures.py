@@ -57,14 +57,15 @@ def fig6_7():
         x, y = cx + r * math.cos(math.radians(ang)), cy + r * math.sin(math.radians(ang))
         pos[ang] = (x, y)
         rbox(ax, x - 1.15, y - 0.45, 2.3, 0.9, text, fs=8.5, fc="0.92" if ang == 270 else "white")
-    order = [90, 0, 270, 180, 90]
-    for a0, a1 in zip(order[:-1], order[1:]):
-        # 円周に沿って、箱の外側どうしを曲線の矢印でつなぐ
-        m0, m1 = a0 - 28, a1 + 28                     # 箱から少し離れた円周上の点
-        p0 = (cx + r * math.cos(math.radians(m0)), cy + r * math.sin(math.radians(m0)))
-        p1 = (cx + r * math.cos(math.radians(m1)), cy + r * math.sin(math.radians(m1)))
-        ax.add_patch(FancyArrowPatch(p0, p1, arrowstyle="-|>", mutation_scale=13, lw=1.1, color="black",
-                                     connectionstyle="arc3,rad=-0.35"))
+    # 箱の辺の中点どうしを、円の外側にふくらむ曲線の矢印でつなぐ（箱には重ねない）
+    w, h, g = 1.15, 0.45, 0.12
+    def edge(ang, side):
+        x, y = pos[ang]
+        return {"r": (x + w + g, y), "l": (x - w - g, y), "t": (x, y + h + g), "b": (x, y - h - g)}[side]
+    links = [((90, "r"), (0, "t")), ((0, "b"), (270, "r")), ((270, "l"), (180, "b")), ((180, "t"), (90, "l"))]
+    for (a0, s0), (a1, s1) in links:
+        ax.add_patch(FancyArrowPatch(edge(a0, s0), edge(a1, s1), arrowstyle="-|>", mutation_scale=13, lw=1.1,
+                                     color="black", shrinkA=0, shrinkB=0, connectionstyle="arc3,rad=-0.3"))
     ax.text(cx, cy, "2〜3回\n繰り返す", ha="center", va="center", fontsize=10, fontweight="bold")
     x2, y2 = pos[0]
     rbox(ax, 8.1, y2 - 0.45, 1.6, 0.9, "採用\n（現場に導入）", fc="0.8", fs=9, lw=1.6)
