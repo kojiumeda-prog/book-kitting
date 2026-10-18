@@ -12,7 +12,7 @@
 （図7-8 導入チェックリストは、本文のチェックリストをそのまま使う）
 """
 import matplotlib.pyplot as plt
-from matplotlib.patches import Polygon
+from matplotlib.patches import FancyArrowPatch, Polygon
 
 from ch3_figures import arrow, rbox, save
 
@@ -42,19 +42,22 @@ def fig7_1():
         rbox(ax, x, 3.0, 2.2, 1.1, t, fs=8.5, fc="0.92" if i == 2 else "white")
         if i < 3:
             arrow(ax, x + 2.22, 3.55, x + 2.73, 3.55)
-    ax.annotate("", xy=(9.5, 2.4), xytext=(9.5, 2.98), arrowprops=dict(arrowstyle="-|>", lw=1.0))
+    arrow(ax, 9.5, 2.98, 9.5, 2.42)
     for i, t in enumerate(bottom):
         x = 8.4 - i * 2.75
         rbox(ax, x, 1.3, 2.2, 1.1, t, fs=8.5, fc="0.92" if i == 2 else "white")
         if i < 2:
             arrow(ax, x - 0.02, 1.85, x - 0.53, 1.85)
-    diamond(ax, 0.2, 1.25, 2.4, 1.2, "⑧ 広げるか？")
-    arrow(ax, 3.13, 1.85, 2.62, 1.85)
-    ax.annotate("", xy=(1.4, 0.3), xytext=(1.4, 1.23), arrowprops=dict(arrowstyle="-|>", lw=1.0))
+    diamond(ax, 0.2, 1.25, 2.4, 1.2, "⑧ 広げるか？")      # 頂点：右(2.6, 1.85)、上(1.4, 2.45)、下(1.4, 1.25)
+
+    def link(p0, p1, ls="-"):                          # 頂点にぴったり付ける矢印（縮めない）
+        ax.add_patch(FancyArrowPatch(p0, p1, arrowstyle="-|>", mutation_scale=12, lw=1.0, color="black",
+                                     linestyle=ls, shrinkA=0, shrinkB=0))
+    link((2.9, 1.85), (2.6, 1.85))                     # ⑦の左辺 → 右の頂点
+    link((1.4, 1.25), (1.4, 0.3))                      # 下の頂点 → はい
     ax.text(1.55, 0.6, "はい：ほかの作業台・品目へ", fontsize=8.5)
-    ax.annotate("", xy=(0.6, 2.98), xytext=(0.6, 2.45),
-                arrowprops=dict(arrowstyle="-|>", lw=1.0, ls="--"))
-    ax.text(0.72, 2.7, "いいえ：直して再試行", fontsize=8, ha="left", va="center")
+    link((1.4, 2.45), (1.4, 3.0), ls="--")             # 上の頂点 → ①の下辺
+    ax.text(1.52, 2.72, "いいえ：直して再試行", fontsize=8, ha="left", va="center")
     ax.text(5.6, 0.45, "灰色の箱＝同じ物差しで測る2回。導入前に測っておかないと、効果は示せない",
             fontsize=8.5, ha="left")
     save(fig, "fig7-1_pilot_flow.png")
