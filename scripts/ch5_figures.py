@@ -250,8 +250,8 @@ def fig5_10():
     with open(os.path.join(RESULTS, "ch5_metrics.csv"), encoding="utf-8") as f:
         rows = list(csv.DictReader(f))
     labels = ["①", "②", "③", "④"]
-    specs = [("トレイをまたぐ工程（/31）", "split_steps", "{:.0f}", "少ないほど良い"),
-             ("工程の散らばり（マス）", "avg_spread", "{:.1f}", "小さいほど良い"),
+    specs = [("工程の分断（/31）", "split_steps", "{:.0f}", "少ないほど良い"),
+             ("工程の広がり（マス）", "avg_spread", "{:.1f}", "小さいほど良い"),
              ("読み順の一致率（%）", "order_match", "{:.1f}", "高いほど良い"),
              ("トレイ間の移動（回）", "tray_switches", "{:.0f}", "少ないほど良い")]
     fig, axes = plt.subplots(1, 4, figsize=(10.4, 3.0))

@@ -79,7 +79,7 @@ def fig6_1():
     for ax, k in zip(axes, names):
         m = d["metrics"][k]
         draw_tray(ax, d["bins"], d["layouts"][k],
-                  title=f"{names[k]}　読み順との一致率 {m['order_match']:.0%}、広がり {m['avg_spread']:.2f}")
+                  title=f"{names[k]}　読み順の一致率 {m['order_match']:.0%}、広がり {m['avg_spread']:.2f}")
     fig.suptitle("SA-02の配置。記号は工程、色が濃いほど後の工程", fontsize=10)
     fig.tight_layout()
     save(fig, "fig6-1_sa02_three.png")
@@ -98,7 +98,7 @@ def fig6_2():
     for ax, (i, k) in zip(axes, enumerate(d["weights_sa02"])):
         r = m[k]
         draw_tray(ax, d["bins_sa02"], d["weights_sa02"][k],
-                  title=f"({'abc'[i]}) {k}　読み順との一致率 {float(r['order_match']):.0%}、広がり {float(r['avg_spread']):.2f}")
+                  title=f"({'abc'[i]}) {k}　読み順の一致率 {float(r['order_match']):.0%}、広がり {float(r['avg_spread']):.2f}")
     fig.suptitle("重みを3通りに変えた配置（SA-02、トレイ1枚）。記号は工程、色が濃いほど後の工程", fontsize=10)
     fig.tight_layout()
     save(fig, "fig6-2_weights_sa02.png")
@@ -117,7 +117,7 @@ def fig6_3():
             dy = 6 if r["weights"] == "読み順重視" else -10      # 近い点の文字が重ならないように
             ax.annotate(r["weights"], (x, y), textcoords="offset points", xytext=(8, dy), fontsize=8.5)
         ax.set_xlabel("まとまり（平均の広がり、マス）　← 小さいほどよい", fontsize=8.5)
-        ax.set_ylabel("読み順との一致率（%）　↑ 高いほどよい", fontsize=8.5)
+        ax.set_ylabel("読み順の一致率（%）　↑ 高いほどよい", fontsize=8.5)
         ax.set_xlim(*xlim)
         ax.set_ylim(*ylim)
         ax.grid(lw=0.3, color="0.8")

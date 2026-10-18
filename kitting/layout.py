@@ -156,7 +156,7 @@ class TrayModel:
         self.n_used = m.NewIntVar(1, n_trays, "n_used")
         m.AddMaxEquality(self.n_used, [self.v[b.id]["t"] + 1 for b in bins])
         total = sum(b.type.area for b in bins)
-        m.Add(self.n_used * W * H >= total)                       # 面積の下界
+        m.Add(self.n_used * W * H >= total)                       # 面積の下限
         if fix_trays is not None:
             m.Add(self.n_used == fix_trays)
 
@@ -175,10 +175,10 @@ class TrayModel:
             m.AddMinEquality(tmin, [a["t"] for a in vv])
             m.AddMaxEquality(tmax, [a["t"] for a in vv])
             tmin_[s], tmax_[s] = tmin, tmax
-            split = m.NewIntVar(0, n_trays - 1, f"split{s}")      # (a) トレイをまたぐ
+            split = m.NewIntVar(0, n_trays - 1, f"split{s}")      # (a) 工程の分断：トレイをまたぐ
             m.Add(split == tmax - tmin)
             terms.append(split_w * split)
-            xmin = m.NewIntVar(0, XMAX, f"xmin{s}")               # (b) 散らばり
+            xmin = m.NewIntVar(0, XMAX, f"xmin{s}")               # (b) 広がり
             xmax = m.NewIntVar(0, XMAX, f"xmax{s}")
             ymin = m.NewIntVar(0, H, f"ymin{s}")
             ymax = m.NewIntVar(0, H, f"ymax{s}")

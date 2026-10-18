@@ -7,7 +7,7 @@
 BLOCK_MM = 75                      # 1ブロックの一辺 [mm]
 TRAY_W, TRAY_H = 16, 8             # トレイの格子（横, 縦）[ブロック]
 TRAY_MM = (TRAY_W * BLOCK_MM, TRAY_H * BLOCK_MM)   # (1200, 600)
-WALL_MM = 10                       # 部品箱の外形と内寸の差（壁の厚み＋すき間）[mm]
+WALL_MM = 10                       # 部品箱の外形と内寸の差（壁の厚み＋隙間）[mm]
 
 # 部品箱寸法の候補（ブロック単位、横 >= 縦）。第4章ではこの中から K 種類を選ぶ。
 CANDIDATE_BINS = [

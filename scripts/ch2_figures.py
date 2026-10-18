@@ -122,7 +122,7 @@ def fig2_3():
     shade = {"A": "0.6", "B": "0.6", "G": "0.6", "C": "0.8", "D": "0.8", "E": "0.92", "F": "0.92"}
     fig, axes = plt.subplots(1, 3, figsize=(11, 3.0), gridspec_kw=dict(width_ratios=[1, 1, 1]))
     panels = [(axes[0], GOOD, "良い詰め方：1枚に収まる"),
-              (axes[1], BAD1, "悪い詰め方：1枚目にすき間が残り…"),
+              (axes[1], BAD1, "悪い詰め方：1枚目に隙間が残り…"),
               (axes[2], BAD2, "…Gが入らず、2枚目が要る")]
     for ax, layout, title in panels:
         ax.set_aspect("equal")
@@ -134,8 +134,8 @@ def fig2_3():
         ax.set_xlim(-0.3, 6.3)
         ax.set_ylim(-0.9, 4.6)
         ax.set_title(title, fontsize=9.5)
-    axes[0].text(3, -0.5, "使ったマス 22／24", ha="center", fontsize=8.5)
-    axes[1].text(3, -0.5, "空きは6マスあるが、2×2の形の空きがない", ha="center", fontsize=8.5)
+    axes[0].text(3, -0.5, "使ったブロック 22／24", ha="center", fontsize=8.5)
+    axes[1].text(3, -0.5, "空きは6ブロック分あるが、2×2の形の空きがない", ha="center", fontsize=8.5)
     axes[2].text(3, -0.5, "トレイ2枚目", ha="center", fontsize=8.5)
     fig.suptitle("同じ7個の部品箱（A, B, G は2×2、C, D は3×1、E, F は2×1）を、横6×縦4マスのトレイに並べる",
                  fontsize=9.5, y=1.02)
@@ -150,7 +150,7 @@ def fig2_4():
     ax.set_ylim(0, 5.6)
     ax.set_axis_off()
     rbox(ax, 3.3, 4.6, 3.4, 0.8, "長方形を、重ならずに並べる", fc="0.85", fs=10, bold=True)
-    rbox(ax, 0.4, 3.0, 3.6, 0.9, "枚数を減らす系統\n（すき間なく詰める）", fs=9.5)
+    rbox(ax, 0.4, 3.0, 3.6, 0.9, "枚数を減らす系統\n（隙間なく詰める）", fs=9.5)
     rbox(ax, 6.0, 3.0, 3.6, 0.9, "近くに置く系統\n（関係の深いものを近くに）", fs=9.5)
     arrow(ax, 4.4, 4.6, 2.4, 3.92)
     arrow(ax, 5.6, 4.6, 7.6, 3.92)
@@ -184,7 +184,7 @@ def fig2_5():
             label=f"横{small[0]['tray'].split('x')[0]}×縦{small[0]['tray'].split('x')[1]}マスの小さなトレイ（全通り数えた実測）")
     xb, yb = [int(r["bins"]) for r in big], [float(r["layouts"]) for r in big]
     ax.plot(xb, yb, marker="s", color="black", lw=1, ls="--",
-            label="横16×縦8＝128マスのトレイ、1×1の部品箱だけ（計算）")
+            label="横16×縦8マス（128ブロック）のトレイ、1×1の部品箱だけ（計算）")
     for x, y in zip(xb, yb):
         e = int(f"{y:.0e}".split("e")[1])
         right = x == 10                                     # 左下の点は右下に書いて、説明の文字と重ねない

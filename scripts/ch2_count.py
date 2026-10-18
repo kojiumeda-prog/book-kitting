@@ -51,7 +51,7 @@ def count_layouts(W, H, bins):
 
 
 def main():
-    W, H = 6, 4                                    # 小さなトレイ（24マス）
+    W, H = 6, 4                                    # 小さなトレイ（24ブロック）
     pattern = [(1, 1), (2, 1), (1, 1), (2, 2), (1, 1), (2, 1)]
     n_max = 6 if "--six" in sys.argv else 5
     rows = []

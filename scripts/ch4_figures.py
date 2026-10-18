@@ -150,7 +150,7 @@ def fig4_7():
                 color="white" if lab == "16" else "black")
     a1.set_xlim(-0.2, TRAY_W + 0.2)
     a1.set_ylim(TRAY_H + 0.2, -0.2)
-    a1.set_title("(a) 1・4・8・16ブロックの部品箱はすき間なく並ぶ（数字はブロック数）", fontsize=8)
+    a1.set_title("(a) 1・4・8・16ブロックの部品箱は隙間なく並ぶ（数字はブロック数）", fontsize=8)
     # 右：8ブロック1個 ＝ 4ブロック1個＋1ブロック4個
     a2.add_patch(Rectangle((0, 0), 4, 2, fc="0.6", ec="black", lw=0.8))
     a2.text(2, 1, "8", ha="center", va="center", fontsize=9)
