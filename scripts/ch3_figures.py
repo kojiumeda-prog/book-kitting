@@ -6,7 +6,6 @@
 図3-2：2008年のスプレッドシートの構造（架空のデータで描き直し）
 図3-3：割当の判定の流れ（入る中で一番小さい部品箱を選ぶ）
 図3-4：中型の部品箱の一辺と、最悪ケースの必要面積（階段）
-図3-6：2008年に残った3つの宿題と、本書の章の対応
 （図3-5は scripts/ch5_figures.py の fig3-5_two_designs.png。第5章はこれを参照する）
 """
 import csv
@@ -226,30 +225,6 @@ def fig3_4():
     save(fig, "fig3-4_staircase.png")
 
 
-# ---------------------------------------------------------------- 図3-6
-def fig3_6():
-    fig, ax = plt.subplots(figsize=(10, 4.8))
-    ax.set_xlim(0, 10)
-    ax.set_ylim(0, 5)
-    ax.set_axis_off()
-    ax.text(1.6, 4.7, "2008年に起きたこと", ha="center", fontsize=10, fontweight="bold")
-    ax.text(5.0, 4.7, "残った宿題", ha="center", fontsize=10, fontweight="bold")
-    ax.text(8.4, 4.7, "この本での解き方", ha="center", fontsize=10, fontweight="bold")
-    rows = [("Solverが動かず\n手で寸法を変えて反復", "1. 部品箱の寸法と\n種類数を決める", "第4章\n品揃え問題（混合整数計画）"),
-            ("3人で手分けして手で描いた\n大きなものは約3時間", "2. トレイの枚数を最小にし\n作業順に並べる", "第5章\nマス目の配置（制約プログラミング）"),
-            ("作業順とサイズ順の\n2つを描いて並べた", "3. 使いやすさと面積の\nどちらを取るか決める", "第6章\n重み・優先順位・解を並べて選ぶ")]
-    for i, (a, b, c) in enumerate(rows):
-        y = 3.55 - i * 1.15
-        rbox(ax, 0.1, y, 3.0, 0.85, a, fs=8.5)
-        rbox(ax, 3.6, y, 2.8, 0.85, b, fc="0.85", fs=8.5, bold=True)
-        rbox(ax, 6.9, y, 3.0, 0.85, c, fs=8.5)
-        arrow(ax, 3.12, y + 0.42, 3.58, y + 0.42)
-        arrow(ax, 6.42, y + 0.42, 6.88, y + 0.42)
-    rbox(ax, 0.1, 0.05, 9.8, 0.7,
-         "宿題が解けた後：部品や手順が変わるたびに作り直す運用をどう回すか → 第7章", fc="0.95", fs=9)
-    save(fig, "fig3-6_homework.png")
-
-
 if __name__ == "__main__":
-    for f in (fig3_1, fig3_2, fig3_3, fig3_4, fig3_6):
+    for f in (fig3_1, fig3_2, fig3_3, fig3_4):
         f()
