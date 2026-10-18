@@ -1,13 +1,13 @@
 """第2章の図。
 
-    python scripts/ch2_figures.py      # 図2-5は先に ch2_count.py --six を実行しておく
+    python scripts/ch2_figures.py      # 図2-4は先に ch2_count.py --six を実行しておく
 
-図2-2：部品 → 外接矩形 → 部品箱（内側と外側）→ トレイのマス目
-図2-3：詰め方の良い例・悪い例（同じ部品箱の組が、1枚に収まるか2枚になるか）
-図2-4：親戚の問題の家系図
-図2-5：部品箱の数と置き方の数（縦軸は対数）
+図2-1：部品 → 外接矩形 → 部品箱（内側と外側）→ トレイのマス目
+図2-2：詰め方の良い例・悪い例（同じ部品箱の組が、1枚に収まるか2枚になるか）
+図2-3：親戚の問題の家系図
+図2-4：部品箱の数と置き方の数（縦軸は対数）
+図2-5：ボトムレフト法の動き
 図2-6：解法の地図（計算時間と答えの良さ）
-図2-7：ボトムレフト法の動き
 """
 import csv
 import os
@@ -34,7 +34,7 @@ def cell_box(ax, x, y, w, h, label="", g="0.8", fs=8, ls="-"):
         ax.text(x + w / 2, y + h / 2, label, ha="center", va="center", fontsize=fs)
 
 
-# ---------------------------------------------------------------- 図2-2
+# ---------------------------------------------------------------- 図2-1
 def fig2_2():
     fig, axes = plt.subplots(1, 4, figsize=(12, 3.4), gridspec_kw=dict(width_ratios=[1, 1, 1.15, 1.6]))
     for ax in axes:
@@ -86,10 +86,10 @@ def fig2_2():
     for a0, a1 in zip(axes[:-1], axes[1:]):
         x = (a0.get_position().x1 + a1.get_position().x0) / 2
         fig.text(x, 0.5, "▶", ha="center", va="center", fontsize=14, color="0.3")
-    save(fig, "fig2-2_part_to_grid.png")
+    save(fig, "fig2-1_part_to_grid.png")
 
 
-# ---------------------------------------------------------------- 図2-3
+# ---------------------------------------------------------------- 図2-2
 GOOD = [("A", 0, 0, 2, 2), ("B", 2, 0, 2, 2), ("G", 4, 0, 2, 2),
         ("C", 0, 2, 3, 1), ("D", 3, 2, 3, 1), ("E", 0, 3, 2, 1), ("F", 2, 3, 2, 1)]
 BAD1 = [("A", 0, 0, 2, 2), ("B", 3, 0, 2, 2), ("C", 0, 2, 3, 1), ("D", 3, 3, 3, 1),
@@ -140,10 +140,10 @@ def fig2_3():
     fig.suptitle("同じ7個の部品箱（A, B, G は2×2、C, D は3×1、E, F は2×1）を、横6×縦4マスのトレイに並べる",
                  fontsize=9.5, y=1.02)
     fig.tight_layout()
-    save(fig, "fig2-3_good_bad.png")
+    save(fig, "fig2-2_good_bad.png")
 
 
-# ---------------------------------------------------------------- 図2-4
+# ---------------------------------------------------------------- 図2-3
 def fig2_4():
     fig, ax = plt.subplots(figsize=(10, 5.2))
     ax.set_xlim(0, 10)
@@ -169,10 +169,10 @@ def fig2_4():
     ax.annotate("", xy=(6.4, 1.12), xytext=(6.35, 1.73),
                 arrowprops=dict(arrowstyle="-|>", lw=1.0, ls="--", color="black"))
     ax.text(5.0, 1.4, "両方にまたがる", ha="center", fontsize=8.5)
-    save(fig, "fig2-4_family_tree.png")
+    save(fig, "fig2-3_family_tree.png")
 
 
-# ---------------------------------------------------------------- 図2-5
+# ---------------------------------------------------------------- 図2-4
 def fig2_5():
     with open(os.path.join(RESULTS, "ch2_count.csv"), encoding="utf-8") as f:
         rows = list(csv.DictReader(f))
@@ -203,7 +203,7 @@ def fig2_5():
     ax.set_ylim(1, 1e240)
     ax.grid(lw=0.3, color="0.85")
     ax.legend(fontsize=7.5, frameon=False, loc="upper left")
-    save(fig, "fig2-5_count.png")
+    save(fig, "fig2-4_count.png")
 
 
 # ---------------------------------------------------------------- 図2-6
@@ -234,7 +234,7 @@ def fig2_6():
     save(fig, "fig2-6_solver_map.png")
 
 
-# ---------------------------------------------------------------- 図2-7
+# ---------------------------------------------------------------- 図2-5
 def fig2_7():
     W, H = 8, 5
     placed = [("A", 0, 0, 2, 4), ("B", 2, 0, 3, 1), ("C", 5, 0, 3, 3)]   # (x, y, w, h)、y=0 が下
@@ -260,7 +260,7 @@ def fig2_7():
     ax.set_xlim(-0.3, 14.5)
     ax.set_ylim(-0.5, 5.8)
     ax.text(4, -0.4, "トレイ（下が手前）", ha="center", va="top", fontsize=8)
-    save(fig, "fig2-7_bottom_left.png")
+    save(fig, "fig2-5_bottom_left.png")
 
 
 if __name__ == "__main__":
